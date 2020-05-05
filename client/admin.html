@@ -2,23 +2,45 @@
 <html>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <head>
-        <title>Quiz</title>
+        <title>Admin - Quiz</title>
+        <link rel="stylesheet" href="css/style.css" type="text/css" />
         <link rel="stylesheet" href="css/admin.css" type="text/css" />
+        <link rel="stylesheet" href="css/button.css" type="text/css" />
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body ontouchstart="">
-        <div class="container">
+        <div class="container white-bg">
             <div id="app">
-                <div v-for="team in teams" v-bind:id="team.id">
-                    ID: {{ team.id }} Name: {{ team.name }} - Connections: {{ team.connections }} - Score: {{ team.score }}
+                <div class="black">
+                    <h1>Quiz Admin Panel - {{version}}</h1>
                 </div>
-                <div v-for="answer in answers">
+                <div class="contestant-container">
+                    <div class="contestant-cube" v-for="team in teams" v-bind:id="team.id">
+                        <i v-if="hasAnswered(team.id)" class="material-icons checkmark">done</i>
+                        <p>{{team.name}}</p>
+                        <p>{{team.score}}</p>
+                        <p>Connections: {{team.connections}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="fl admin-questions black">
+                    <p>Question: {{current_question+1}} (text-only)</p>
+                    <p>{{question}}</p>
+                </div>
+                <hr>
+                <div class="control-container">
+                    <button class="btn btn-1 btn-sep icon-play" v-if="current_question === -1" @click="onClickNext">Start Quiz</button>
+                    <button class="btn btn-2 btn-sep icon-next" v-else-if="current_question+1 < questions.length" @click="onClickNext">Next question</button>
+                    <p class="black" v-else>Oh no 😢 - Game Ende</p>
+                </div>
+                <hr>
+                <div class="fl message-container"v-for="answer in answers">
                     Team-id: {{ answer.team_id }}
                     Question-id: {{ answer.question_id }}
                     Answer-id: {{ answer.answer_id }}
                     Time: {{ answer.time }}
                 </div>
-                <button v-if="current_question+1 < questions.length" @click="onClickNext">Next question</button>
             </div>
         </div>
         

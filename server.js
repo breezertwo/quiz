@@ -1,12 +1,17 @@
 var path = require('path');
+var fetch = require("node-fetch");
 var express = require('express');
 var multer = require('multer');
-
+var jo = require('jpeg-autorotate');
+var fs = require('fs');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
+
+var teams = require('./teams.js');
+var pkg = require('./package.json');
 
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -45,14 +50,12 @@ io.use(function(socket, next) {
 var quiz = {
   questions: [
     { data: { text: 'What time is it right now?', options: ['Now', '21:51', 'Yesterday', 'Tomorrow'] }, correct_id: 0, time_limit: 1 },
-    { data: { text: 'What move is this song from?', youtube: 'https://www.youtube.com/embed/t_KI-mRyE_0?autoplay=1&controls=0', options: ['Now', '21:51', 'Yesterday', 'Tomorrow'] }, correct_id: 0, time_limit: 1 },
+    { data: { text: 'What movie is this song from?', youtube: 'https://www.youtube.com/embed/t_KI-mRyE_0?autoplay=1&controls=0', options: ['Now', '21:51', 'Yesterday', 'Tomorrow'] }, correct_id: 0, time_limit: 1 },
     { data: { text: 'Who is this scary guy?', image: 'img/k.png', options: ['Christmas Satan', 'Krampus', 'Julus', 'Nisse'] }, correct_id: 1, time_limit: 2 },
     { data: { text: 'What year did Titanic sink?', options: ['1912 ', '1903', '1898', '1914'] }, correct_id: 1, time_limit: 2 },
     { data: { text: 'In this office, 12 santa hats are hidden. One for your team must find one and return wearing it. The faster, the better score.', options: ['Got it!'] }, correct_id: 0, time_limit: 5 },
   ]
 };
-
-var teams = require('./teams.js');
 
 var answers = [];
 
@@ -79,9 +82,6 @@ app.get('/tv', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/tv.html'));
 });
 
-var jo = require('jpeg-autorotate');
-var fs = require('fs');
-
 app.post('/upload', upload.single('image'), function(req, res, next) {
   var path = 'img/uploads/' + req.file.filename;
   var realPath = './client/' + path;
@@ -100,8 +100,16 @@ app.post('/upload', upload.single('image'), function(req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'client')));
 
+var quote = [];
+
+async function getJoke(type){
+  let url = 'http://jokes.guyliangilsing.me/retrieveJokes.php?type=' + type;
+  let data = await(await fetch(url)).json();
+  quote = data
+}
+
 function updateAdminStatus() {
-  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions });
+  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: pkg });
 }
 
 function getTeamById(id) {
@@ -120,7 +128,10 @@ io.on('connection', function(socket) {
       t.connections++;
     }
     updateAdminStatus();
-    
+
+    getJoke("random")
+    io.emit('quote-update', { quote: quote});
+ 
     socket.on('disconnect', function() {
       console.log('User diconnected');
         var t = getTeamById(socket.request.session.team_id);
@@ -149,12 +160,10 @@ io.on('connection', function(socket) {
         var answersSoFar = answers.filter(function(a) {
           return (a.question_id == current_question && a.answer_id == q.correct_id);
         }).length;
-        var score = 0;
         if (data.answer_id == q.correct_id) {
-          score = teams.length * (current_question+1) - answersSoFar;
-          t.score += score;
+          t.score += 1;
         }
-        answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time: Date(), score: score  });
+        answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time: Date(), score: t.score });
       }
       updateAdminStatus();
     });
@@ -165,21 +174,21 @@ io.on('connection', function(socket) {
               if (interval)
                 clearInterval(interval);
               var question = quiz.questions[++current_question];
-                io.emit('quiz', question.data);
+              io.emit('quiz', question.data);
                 
-                var timer = question.time_limit * 60;
-                interval = setInterval(function() {
-                  timer--;
-                  io.emit('timer', { timeLeft: timer });
-                  if (timer == 0) {
-                    clearInterval(interval);
-                  }
-                }, 1000);
-                
-                state = STATES.STARTED;
-                break;
+              var timer = question.time_limit * 60;
+              interval = setInterval(function() {
+                timer--;
+                io.emit('timer', { timeLeft: timer });
+                if (timer == 0) {
+                  clearInterval(interval);
+                }
+              }, 1000);
+              
+             state = STATES.STARTED;
+              break;
             default:
-                break;
+              break;
         }
         updateAdminStatus();
     });

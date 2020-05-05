@@ -1,0 +1,41 @@
+.fl {
+    width: 100%;
+    display: flex;
+}
+
+.contestant-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.contestant-cube {
+    background: #077a63;
+    margin-bottom: 1em;
+    border: 2px solid black;
+    padding: 5px;
+    margin: 5px;
+}
+
+.white-bg {
+    background: white;
+    height: 100vh;
+}
+
+.black {
+    color: black;
+    margin: 0;
+    padding: 20px;
+}
+
+.admin-questions {
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.message-container {
+    color: black
+}

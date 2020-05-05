@@ -15,9 +15,12 @@ var app = new Vue({
         state: -1,
         question: '',
         options: [],
+        image: null,
+        youtube: null,
         answer_id: -1,
         question_number: null,
-        timeLeft: null
+        timeLeft: null,
+        quote: ''
     },
     created: function(e) {
         var that = this;
@@ -27,6 +30,10 @@ var app = new Vue({
             that.reset();
             that.state = that.QuizStates.QUIZZING;
             that.question = data.text;
+            if (data.hasOwnProperty('image')) that.image = data.image;
+            else that.image = null
+            if (data.hasOwnProperty('youtube')) that.youtube = data.youtube;
+            else that.youtube = null;
             that.options = data.options;
         });
         
@@ -43,6 +50,10 @@ var app = new Vue({
             if (that.timeLeft == 0) {
                 setTimeout(that.reset, 5000);
             }
+        });
+
+        socket.on('quote-update', function(data) {
+            that.quote = data.quote
         });
         
         socket.emit('quiz', {});

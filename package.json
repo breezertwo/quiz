@@ -1,6 +1,6 @@
 {
-  "name": "workspace",
-  "version": "1.0.0",
+  "name": "quiz-server",
+  "version": "0.1.0",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "jpeg-autorotate": "^2.0.0",
     "mongodb": "^2.2.11",
     "multer": "^1.2.0",
+    "node-fetch": "^2.6.0",
     "socket.io": "^1.6.0"
   }
 }
