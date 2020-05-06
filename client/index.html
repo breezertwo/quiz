@@ -24,12 +24,17 @@
                     </div>
                 </div>
                 <div v-else>
-                    <h3>Question {{ question_number }}</h3>
-                    <h3>{{ question }}</h3>
-                    <h3>Time {{ minutesLeft }}:{{ secondsLeft }}</h3>
-                    <img v-if="image" v-bind:src="image"></img>
-                    <iframe v-if="youtube" width="560" height="315" v-bind:src="youtube" frameborder="0"></iframe>
-                    <button v-for="(o, index) in options" @click.prevent="select" class="button" v-bind:id="index" v-bind:class="index == answer_id ? 'button-selected' : ''">{{ o }}</button>
+                    <h3>Frage {{question_number+1}} - Zeit {{ minutesLeft }}:{{ secondsLeft }}</h3>
+                    <div class="question-container">
+                        <h3>{{ question }}</h3>
+                    </div>
+                    <div class="question-img-v-container">
+                        <img v-if="image" v-bind:src="image"></img>
+                        <iframe v-if="youtube" width="560" height="315" v-bind:src="youtube" frameborder="0"></iframe>
+                    </div>
+                    <div class="answer-container">
+                        <button v-for="(o, index) in options" @click.prevent="select" class="button" v-bind:id="index" v-bind:class="index == answer_id ? 'button-selected' : ''">{{ o }}</button>
+                    </div>
                     <div class="submit-div">
                         <button v-if="state == QuizStates.SELECTED && timeLeft > 0" @click.prevent="submit" class="button button-submit">Submit</button>
                         <div v-if="state == QuizStates.SUBMITTING" class="sk-folding-cube">

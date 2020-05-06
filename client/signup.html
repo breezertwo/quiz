@@ -12,21 +12,22 @@
         <div class="container">
             <div id="app">
                 <div v-if="!team_id">
-                    <h3>Choose your team</h3>
-                    <div v-for="team in teams" class="team-card">
-                        <a href="#" class="not-a-link" :id="team.id" @click.prevent="onClickTeam"></a>
-                        {{ team.name }}
-                        <ul><li v-for="member in team.members">{{ member }}</li></ul>
+                    <h3>Choose your player</h3>
+                    <div class="team-container">
+                        <div v-for="team in teams" class="team-card">
+                            <a href="#" class="not-a-link" :id="team.id" @click.prevent="onClickTeam"></a>
+                            <p>{{ team.name }}</p>
+                        </div>
                     </div>
                 </div>
                 <div v-if="team_id">
                     <h3>Setup</h3>
-                    <label for="name">Team name</label>
+                    <label for="name">Player name</label>
                     <input type="text" id="name" v-model="name" />
-                    <ul><li v-for="member in members">{{ member }}</li></ul>
-                    <img v-if="image" v-bind:src="image" style="max-width: 200px;"></img>
+                    <!--<ul><li v-for="member in members">{{ member }}</li></ul>
+                    <img v-if="!image" v-bind:src="image" style="max-width: 200px;"></img>
                     <input v-if="!image && !uploading" type="file" id="image" accept="image/*" name="image" @change="onChange" class="image-upload" />
-                    <label v-if="!image && !uploading" for="image"><i class="material-icons">camera_enhance</i>Snap a pic!</label>
+                    <label v-if="!image && !uploading" for="image"><i class="material-icons">camera_enhance</i>Snap a pic!</label> -->
                     <div v-if="uploading" class="sk-folding-cube">
                         <div class="sk-cube1 sk-cube"></div>
                         <div class="sk-cube2 sk-cube"></div>

@@ -35,6 +35,7 @@ var app = new Vue({
             if (data.hasOwnProperty('youtube')) that.youtube = data.youtube;
             else that.youtube = null;
             that.options = data.options;
+            that.question_number = data.question_id;
         });
         
         socket.on('reset', function(data) {

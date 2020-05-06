@@ -48,13 +48,7 @@ io.use(function(socket, next) {
 });
 
 var quiz = {
-  questions: [
-    { data: { text: 'What time is it right now?', options: ['Now', '21:51', 'Yesterday', 'Tomorrow'] }, correct_id: 0, time_limit: 1 },
-    { data: { text: 'What movie is this song from?', youtube: 'https://www.youtube.com/embed/t_KI-mRyE_0?autoplay=1&controls=0', options: ['Now', '21:51', 'Yesterday', 'Tomorrow'] }, correct_id: 0, time_limit: 1 },
-    { data: { text: 'Who is this scary guy?', image: 'img/k.png', options: ['Christmas Satan', 'Krampus', 'Julus', 'Nisse'] }, correct_id: 1, time_limit: 2 },
-    { data: { text: 'What year did Titanic sink?', options: ['1912 ', '1903', '1898', '1914'] }, correct_id: 1, time_limit: 2 },
-    { data: { text: 'In this office, 12 santa hats are hidden. One for your team must find one and return wearing it. The faster, the better score.', options: ['Got it!'] }, correct_id: 0, time_limit: 5 },
-  ]
+  questions: require('./questions.js')
 };
 
 var answers = [];
@@ -111,6 +105,8 @@ async function getJoke(type){
 
 function updateAdminStatus() {
   io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: config });
+  getJoke("random")
+  io.emit('quote-update', { quote: quote});
 }
 
 function getTeamById(id) {
@@ -121,24 +117,22 @@ function getTeamById(id) {
 
 var interval = null;
 
-io.on('connection', function(socket) {
-    console.log('User connected');
-    
+io.on('connection', function(socket) {    
     var t = getTeamById(socket.request.session.team_id);
     if (t) {
       t.connections++;
+      console.log('User connected - ', t.name);
+
     }
     updateAdminStatus();
 
-    getJoke("random")
-    io.emit('quote-update', { quote: quote});
- 
     socket.on('disconnect', function() {
-      console.log('User diconnected');
         var t = getTeamById(socket.request.session.team_id);
         if (t)
           t.connections--;
         updateAdminStatus();
+        console.log('User diconnected');
+
     });
     
     socket.on('quiz', function(data) {
@@ -149,7 +143,8 @@ io.on('connection', function(socket) {
           });
 
           if(answer.length == 0)
-            socket.emit('quiz', quiz.questions[current_question].data);
+            var quiz_msg = {...quiz.questions[current_question].data, ...{question_id: current_question}}
+            socket.emit('quiz', quiz_msg);
       }
     });
     
@@ -175,9 +170,11 @@ io.on('connection', function(socket) {
               if (interval)
                 clearInterval(interval);
               var question = quiz.questions[++current_question];
-              io.emit('quiz', question.data);
+              var quiz_msg = {...question.data, ...{question_id: current_question}}
+
+              io.emit('quiz', quiz_msg);
                 
-              var timer = question.time_limit * 60;
+              var timer = 10 * 60; // TODO: Make timer optional
               interval = setInterval(function() {
                 timer--;
                 io.emit('timer', { timeLeft: timer });
