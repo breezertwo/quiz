@@ -25,13 +25,17 @@
                 </div>
                 <hr>
                 <div class="fl admin-questions black">
-                    <p>Question: {{current_question+1}} (text-only)</p>
-                    <p>{{question}}</p>
+                    <p v-if="current_question === -1">Quiz not started yet</p>
+                    <p v-else-if="current_question+1 < questions.length">Question: {{current_question+1}} (text-only)</p>
+                    <p v-else>Quiz ended</p>
+                    <p v-if="current_question+1 < questions.length">{{question}}</p>
                 </div>
                 <hr>
                 <div class="control-container">
                     <button class="btn btn-1 btn-sep icon-play" v-if="current_question === -1" @click="onClickNext">Start Quiz</button>
                     <button class="btn btn-2 btn-sep icon-next" v-else-if="current_question+1 < questions.length" @click="onClickNext">Next question</button>
+                    <button class="btn btn-3 btn-sep icon-refresh" v-else @click="onReload">ENDE</button>
+
                     <p class="black" v-else>Oh no 😢 - Game Ende</p>
                 </div>
                 <hr>

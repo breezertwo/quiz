@@ -28,17 +28,20 @@ var app = new Vue({
         });
     },
     methods: {
-       onClickNext: function(e) {
-        socket.emit('admin', { action: 'next-question' });
-       },
-       hasAnswered: function(team_id) {
-        var that = this;
-        var a = this.answers.filter(function(a) {
-            return (a.question_id == that.current_question && a.team_id == team_id);
-        })[0];
-        if (a) return true;
-        return false;
-    }
+        onClickNext: function(e) {
+            socket.emit('admin', { action: 'next-question' });
+        },
+        hasAnswered: function(team_id) {
+            var that = this;
+            var a = this.answers.filter(function(a) {
+                return (a.question_id == that.current_question && a.team_id == team_id);
+            })[0];
+            if (a) return true;
+            return false;
+        },
+        onReload: function() {
+            // socket.emit('admin', { action: 'request-reload' });
+        }
     }
 });
 

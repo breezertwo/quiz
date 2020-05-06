@@ -4,5 +4,4 @@ module.exports = [
     { data: { text: 'Wer ist auf diesem Bild?', image: 'img/k.png', options: ['Weihnachtlicher Satan', 'Krampus', 'Julus', 'Nisse'] }, correct_id: 1, time_limit: 2 },
     { data: { text: 'In welchem Jahr sank die Titanic?', options: ['1912 ', '1903', '1898', '1914'] }, correct_id: 1, time_limit: 2 },
     { data: { text: 'Wie viele Einkerbungen hat ein Golfball?', options: ['330 ', '336', '350', '328'] }, correct_id: 1, time_limit: 2 },
-    //{ data: { text: 'In this office, 12 santa hats are hidden. One for your team must find one and return wearing it. The faster, the better score.', options: ['Got it!'] }, correct_id: 0, time_limit: 5 },
 ]

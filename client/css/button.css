@@ -156,8 +156,9 @@
     content: "\f07a";
 }
 
-.icon-heart:before {
-    content: "\f55a";
+.icon-refresh:before {
+    /*content: "\f021";*/
+    content: "\f05e";
 }
 
 .icon-play:before {

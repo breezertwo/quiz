@@ -134,7 +134,7 @@ io.on('connection', function(socket) {
         console.log('User diconnected');
 
     });
-    
+
     socket.on('quiz', function(data) {
       if (state == STATES.STARTED) {
           var t = getTeamById(socket.request.session.team_id);
@@ -184,6 +184,9 @@ io.on('connection', function(socket) {
               }, 1000);
               
              state = STATES.STARTED;
+              break;
+            case 'request-reload':
+              console.log('Not implemented yet');
               break;
             default:
               break;
