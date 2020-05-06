@@ -11,7 +11,7 @@ var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 
 var teams = require('./teams.js');
-var pkg = require('./package.json');
+var config = require('./config.json');
 
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -83,6 +83,7 @@ app.get('/tv', function(req, res) {
 });
 
 app.post('/upload', upload.single('image'), function(req, res, next) {
+  
   var path = 'img/uploads/' + req.file.filename;
   var realPath = './client/' + path;
   
@@ -109,7 +110,7 @@ async function getJoke(type){
 }
 
 function updateAdminStatus() {
-  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: pkg });
+  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: config });
 }
 
 function getTeamById(id) {
