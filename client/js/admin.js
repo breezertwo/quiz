@@ -1,5 +1,5 @@
 /*global io*/
-var socket = io();//.connect('https://swecoquiz-thomasbiz.c9users.io/');
+var socket = io();
 
 /*global Vue*/
 var app = new Vue({

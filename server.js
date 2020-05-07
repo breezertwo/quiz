@@ -115,6 +115,14 @@ function getTeamById(id) {
   })[0];
 }
 
+function orderChecker(rightOrder, answerClient, options){
+
+  for (var i = 0; i < rightOrder.length; i++)
+    if (answerClient.indexOf(options[i]) !== rightOrder[i]) return false
+
+  return true;
+}
+
 var interval = null;
 
 io.on('connection', function(socket) {    
@@ -153,10 +161,11 @@ io.on('connection', function(socket) {
       var t = getTeamById(socket.request.session.team_id);
       if (t) {
         var q = quiz.questions[current_question];
-        var answersSoFar = answers.filter(function(a) {
-          return (a.question_id == current_question && a.answer_id == q.correct_id);
-        }).length;
-        if (data.answer_id == q.correct_id) {
+
+        if (q.data.order && data.order) {
+          if (orderChecker(q.data.order, data.order, q.data.options))
+            t.score += 1;
+        } else if (data.answer_id == q.correct_id) {
           t.score += 1;
         }
         answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time: Date(), score: t.score });

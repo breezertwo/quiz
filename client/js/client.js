@@ -1,5 +1,5 @@
 /*global io*/
-var socket = io();//.connect('https://swecoquiz-thomasbiz.c9users.io/');
+var socket = io();
 
 /*global Vue*/
 var app = new Vue({
@@ -17,6 +17,7 @@ var app = new Vue({
         options: [],
         image: null,
         youtube: null,
+        order: [],
         answer_id: -1,
         question_number: null,
         timeLeft: null,
@@ -34,6 +35,8 @@ var app = new Vue({
             else that.image = null
             if (data.hasOwnProperty('youtube')) that.youtube = data.youtube;
             else that.youtube = null;
+            if (data.hasOwnProperty('order')) that.order = data.order;
+            else that.order = null;
             that.options = data.options;
             that.question_number = data.question_id;
         });
@@ -91,8 +94,9 @@ var app = new Vue({
         },
         submit: function(e) {
             this.state = this.QuizStates.SUBMITTING;
-            socket.emit('submit', {answer_id: this.answer_id} );
-        }
+            if (this.order && this.order.length > 0) socket.emit('submit', {order: this.options} );
+            else socket.emit('submit', {answer_id: this.answer_id} );
+        },
     }
 });
 
