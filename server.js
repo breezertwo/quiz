@@ -194,6 +194,11 @@ io.on('connection', function(socket) {
               
              state = STATES.STARTED;
               break;
+            case 'show-answer':
+              var q = quiz.questions[current_question];
+              if (q.data.order) io.emit('show-answer', {question: q.data.text, answer: q.data.options[q.correct_id], order: q.data.order});
+              else io.emit('show-answer', {question: q.data.text, answer: q.data.options[q.correct_id]});
+              break;
             case 'request-reload':
               console.log('Not implemented yet');
               break;

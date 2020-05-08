@@ -23,6 +23,15 @@
                         <h3>"{{quote.joke}}"</h3>
                     </div>
                 </div>
+                <div class="answer-dialog" v-else-if="state == QuizStates.ANSWER">
+                    <h3>Frage {{question_number+1}} - Lösung</h3>
+                    <div class="question-container">
+                        <h3>{{ question }}</h3>
+                    </div>
+                    <div v-if="!order" class="answer-container">
+                        <button class="button" >{{ options }}</button>
+                    </div>
+                </div>
                 <div v-else>
                     <h3>Frage {{question_number+1}} - Zeit {{ minutesLeft }}:{{ secondsLeft }}</h3>
                     <div class="question-container">
@@ -41,7 +50,7 @@
                          </draggable>
                     </div>
                     <div class="submit-container">
-                        <button v-if="state == QuizStates.SELECTED && timeLeft > 0" @click.prevent="submit" class="button button-submit">Submit</button>
+                        <button v-if="state == QuizStates.SELECTED || order" @click.prevent="submit" class="button button-submit">Submit</button>
                         <div v-if="state == QuizStates.SUBMITTING" class="sk-folding-cube">
                             <div class="sk-cube1 sk-cube"></div>
                             <div class="sk-cube2 sk-cube"></div>

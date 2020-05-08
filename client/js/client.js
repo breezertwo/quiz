@@ -10,7 +10,8 @@ var app = new Vue({
             SELECTED: 2,
             SUBMITTING: 3,
             SUBMITTED: 4,
-            WAITING: 5  
+            WAITING: 5,
+            ANSWER: 6  
         },
         state: -1,
         question: '',
@@ -21,7 +22,7 @@ var app = new Vue({
         answer_id: -1,
         question_number: null,
         timeLeft: null,
-        quote: ''
+        quote: '',
     },
     created: function(e) {
         var that = this;
@@ -39,6 +40,15 @@ var app = new Vue({
             else that.order = null;
             that.options = data.options;
             that.question_number = data.question_id;
+
+        }); 
+
+        socket.on('show-answer', function(data) {
+            that.state = that.QuizStates.ANSWER;
+            that.question = data.question;
+            that.options = data.answer;
+            if (data.hasOwnProperty('order')) that.order = data.order;
+            else that.order = null;
         });
         
         socket.on('reset', function(data) {

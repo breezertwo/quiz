@@ -11,7 +11,8 @@ var app = new Vue({
         current_question: -1,
         version: -1,
         question: '',
-        correct: false
+        correct: false,
+        showNextButton: true
     },
 
     created: function(e) {
@@ -26,10 +27,18 @@ var app = new Vue({
         socket.on('quiz', function(data) {
             that.question = data.text;
         });
+        socket.on('show-answer', function(data) {
+            that.question = 'Answer is displayed for clients'
+        });
     },
     methods: {
         onClickNext: function(e) {
             socket.emit('admin', { action: 'next-question' });
+            this.showNextButton = false;
+        },
+        onClickAnswer: function(e) {
+            socket.emit('admin', { action: 'show-answer' });
+            this.showNextButton = true;
         },
         hasAnswered: function(team_id) {
             var that = this;
@@ -37,6 +46,11 @@ var app = new Vue({
                 return (a.question_id == that.current_question && a.team_id == team_id);
             })[0];
             if (a) return true;
+            return false;
+        },
+        allAnswered: function() {
+            if (this.teams.length == this.answers.filter(a => a.question_id === this.current_question).length)
+                return true;
             return false;
         },
         onReload: function() {
