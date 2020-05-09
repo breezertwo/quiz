@@ -49,7 +49,7 @@ var app = new Vue({
             return false;
         },
         allAnswered: function() {
-            if (this.teams.length == this.answers.filter(a => a.question_id === this.current_question).length)
+            if (/*this.teams.length*/ 1 == this.answers.filter(a => a.question_id === this.current_question).length)
                 return true;
             return false;
         },

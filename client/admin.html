@@ -34,8 +34,8 @@
                 <div class="control-container">
                     <button class="btn btn-1 btn-sep icon-play" v-if="current_question === -1" @click="onClickNext">Start Quiz</button>
                     <button class="btn btn-2 btn-sep icon-next" v-else-if="current_question < questions.length && showNextButton" @click="onClickNext">Next question</button>
-                    <p class="black" v-else-if="current_question < questions.length && !showNextButton">Wating for answers</p>
-                    <button class="btn btn-3 btn-sep icon-refresh" v-else-if="current_question == questions.length" @click="onReload">ENDE</button>
+                    <p class="black" v-else-if="current_question < questions.length && !showNextButton && current_question+1 !== questions.length">Wating for answers</p>
+                    <button class="btn btn-3 btn-sep icon-refresh" v-else-if="current_question+1 == questions.length" @click="onReload">ENDE</button>
                     <button class="btn btn-4 btn-sep icon-answer" v-if="allAnswered() && !showNextButton" @click="onClickAnswer">Show Answer</button>
                 </div>
                 <hr>

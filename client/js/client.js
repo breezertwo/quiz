@@ -46,9 +46,7 @@ var app = new Vue({
         socket.on('show-answer', function(data) {
             that.state = that.QuizStates.ANSWER;
             that.question = data.question;
-            that.options = data.answer;
-            if (data.hasOwnProperty('order')) that.order = data.order;
-            else that.order = null;
+            that.options = data.answers;
         });
         
         socket.on('reset', function(data) {
