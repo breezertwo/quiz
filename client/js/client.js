@@ -23,6 +23,7 @@ var app = new Vue({
         question_number: null,
         timeLeft: null,
         quote: '',
+        input: ''
     },
     created: function(e) {
         var that = this;
@@ -103,6 +104,7 @@ var app = new Vue({
         submit: function(e) {
             this.state = this.QuizStates.SUBMITTING;
             if (this.order && this.order.length > 0) socket.emit('submit', {order: this.options} );
+            else if (this.input !== '') socket.emit('submit', {input: this.input});
             else socket.emit('submit', {answer_id: this.answer_id} );
         },
     }

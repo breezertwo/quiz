@@ -123,6 +123,19 @@ function orderChecker(rightOrder, answerClient, options){
   return true;
 }
 
+function getClosestAnswer(currAnswers, userAnswer){
+  
+  let answersList = []
+  
+  currAnswers.forEach(function (a, i) {
+    answersList[i] = a.answer_id 
+  }); 
+
+  const output = answersList.reduce((prev, curr) => Math.abs(curr - userAnswer) < Math.abs(prev - userAnswer) ? curr : prev);
+
+  return currAnswers.filter(a => {return a.answer_id === output})
+}
+
 var interval = null;
 
 io.on('connection', function(socket) {    
@@ -165,10 +178,22 @@ io.on('connection', function(socket) {
         if (q.data.order && data.order) {
           if (orderChecker(q.data.order, data.order, q.data.options))
             t.score += 1;
+          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.order, time: Date(), score: t.score });
+        } else if (data.input) {
+
+          // has to be pushed before, because the answers object is used to award the point
+          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time: Date(), score: t.score });
+
+          var currAnswers = answers.filter(a => a.question_id === current_question);
+          if (currAnswers.length == teams.length) {
+            for (winner of getClosestAnswer(currAnswers, q.correct_id))
+              getTeamById(winner.team_id).score += 1;
+          }
+
         } else if (data.answer_id == q.correct_id) {
           t.score += 1;
+          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time: Date(), score: t.score });
         }
-        answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time: Date(), score: t.score });
       }
       updateAdminStatus();
     });

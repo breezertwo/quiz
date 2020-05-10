@@ -44,7 +44,10 @@
                         <img v-if="image" v-bind:src="image"></img>
                         <iframe v-if="youtube" width="560" height="315" v-bind:src="youtube" frameborder="0"></iframe>
                     </div>
-                    <div v-if="!order" class="answer-container">
+                    <div v-if="options.length == 0" class="answer-container">
+                        <input type="text" id="input" v-model="input" />
+                    </div>
+                    <div v-else-if="!order" class="answer-container">
                         <button v-for="(o, index) in options" @click.prevent="select" class="button" v-bind:id="index" v-bind:class="index == answer_id ? 'button-selected' : ''">{{ o }}</button>
                     </div>
                     <div v-else class="answer-container order">
@@ -53,7 +56,7 @@
                          </draggable>
                     </div>
                     <div class="submit-container">
-                        <button v-if="state == QuizStates.SELECTED || order" @click.prevent="submit" class="button button-submit">Submit</button>
+                        <button v-if="state == QuizStates.SELECTED || order || options.length == 0" @click.prevent="submit" class="button button-submit">Submit</button>
                         <div v-if="state == QuizStates.SUBMITTING" class="sk-folding-cube">
                             <div class="sk-cube1 sk-cube"></div>
                             <div class="sk-cube2 sk-cube"></div>
