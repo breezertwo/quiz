@@ -1,8 +1,45 @@
 module.exports = [
-    { data: { text: 'Ordne A, B, C, D', options: ['B', 'A', 'C', 'D'], order: [1, 0, 2, 3] }, correct_id: 0, time_limit: 1 },
-    { data: { text: 'Wie viel Uhr ist es jetzt?', options: ['Jetzt', '21:51', 'Gestern', 'Heute'] }, correct_id: 0, time_limit: 1 },
-    { data: { text: 'Wer ist der Komponist von diesem Track', youtube: 'https://www.youtube.com/embed/IoyGwAK9q8g?autoplay=1&controls=0', options: ['Ndrs_', 'Fe24x', 'Thomsator', 'Schmi3dy'] }, order: [], correct_id: 0, time_limit: 1 },
-    { data: { text: 'Wer ist auf diesem Bild?', image: 'img/k.png', options: ['Weihnachtlicher Satan', 'Krampus', 'Julus', 'Nisse'] }, correct_id: 1, time_limit: 2 },
-    { data: { text: 'In welchem Jahr sank die Titanic?', options: ['1912 ', '1903', '1898', '1914'] }, correct_id: 1, time_limit: 2 },
-    { data: { text: 'Wie viele Einkerbungen hat ein Golfball?', options: ['330 ', '336', '350', '328'] }, correct_id: 1, time_limit: 2 },
-]
+    // Film & Fernsehen
+    { data: { text: 'Die Telenovela Sturm der Liebe ist seit Jahren ein zentraler Bestandteil des Nachmittagsprogramms der ARD. Wieviele Folgen gibt es von ihr?)', options: []}, correct_id: 3376 , time_limit: 1 },
+    { data: { text: 'Aus welchem Film ist diese Szene?', youtube: 'https://www.youtube.com/embed/5AnfMs_Vlac?autoplay=1&controls=0',  options: ['Fight Club', 'Seven', 'The Detective', 'Moneyball'] }, correct_id: 1, time_limit: 1},
+    { data: { text: 'Welcher R-rated (vgl. FSK18) Film hat den größten Box-Office Gewinn aller Zeiten?',  options: ['Joker',  'Once Upon a Time... in Hollywood', 'Deadpool', 'The Matrix Reloaded'] }, correct_id: 0, time_limit: 1},
+    { data: { text: 'Zu welchem dieser Filme gibt es keine Fortsetzung?',  options: ['Steven Spielberg’s: Jaws',  'Stanley Kubrick’s: The Shining', 'Alfred Hitchcock’s: Psycho', 'John Carpenter’s: The Thing'] }, correct_id: 3, time_limit: 1},
+    { data: { text: 'Der Abschluss einer Serie markiert für alle Zuschauer einen besonderen Moment. Während es Serien wie Breaking Bad oder The Big Bang Theory geschafft haben, die Fans mit ihrer letzten Folge zu begeistern, gab es in der Vergangenheit leider auch einige Negativbeispiele. Ordne diese Serien nach der IMDb-Bewertung ihrer letzten Folge (schlechteste zu beste von links nach rechts).',  options: ['Dexter',  'How I Met Your Mother', 'Two and a Half Men', 'Game of Thrones'], order: [2, 3, 0, 1 ] }, correct_id: 0, time_limit: 1},
+    { data: { text: 'Ordne folgende Trash-TV Formate ihrem Slogan zu!  A: Die Geissens, B: Abgestempelt, C: Daniela Katzenberger, D: The Mole',  options: ['Hans Sarpei will\'s wissen',  'Wem kannst du Trauen?', 'Familienglück auf Mallorca', 'Eine schrecklich glamouröse Familie'], order: [3, 0, 2, 1 ] }, correct_id: 0, time_limit: 1},
+    // Gang
+    { data: { text: 'Wer hat diese Nachricht geschrieben?', image: 'img/wa_screen.jpg', options: ['Fex', 'Lena', 'Tom', 'Dubbi']}, correct_id: 2, time_limit: 1 },
+    { data: { text: 'Chrissy denkt seit Jahren das Andys Dad sie nicht mögen würde. Aber warum?', options: ['Sie hat ein HDMI Kabel zerstört', 'Sie hat einen Muffin mit Senf gefüllt', 'Sie hat eine Lampe zerschossen', 'Sie hat ein Ferrero Rocher mit BBQ-Soße gefüllt']}, correct_id: 1, time_limit: 1 },
+    { data: { text: 'Wie oft ist in der LoL 🤡-Fiesta Gruppe auf WhatsApp der Begriff ‘boostlord’ zu lesen? (24.2.17 - heute)', options: []}, correct_id: 9 , time_limit: 1 },
+    { data: { text: 'Wer hat seinen aktuellen WhatsApp Status schon am längsten?',  options: ['Felix', 'Lena', 'Christian', 'Schmiedy'] }, correct_id: 3, time_limit: 1},
+    { data: { text: 'Wessen FuPa Spielerprofil hat die wenigsten Aufrufe? (Stand: 10.05.2020)',  options: ['Thomas Martinek', 'Lena Burkhart','Felix Gloger', 'Thomas Schmiedler'] }, correct_id: 1, time_limit: 1},
+    { data: { text: 'Wieviele Stunden vor der geplanten Abfahrt hat Chris letztes Jahr in der Urlaubsgruppe abgesagt, weil er nach dem Stadtfest vom Fahrrad gefallen ist?', options: []}, correct_id: 18 , time_limit: 1 },
+    // Musik
+    { data: { text: 'Welchem Genre ist der folgende Song zuzuordnen?', youtube: 'https://www.youtube.com/embed/JjaUdqAu1vs?autoplay=1&controls=0',  options: ['Psychadelic Rock', 'Glam Rock', 'Surf Rock', 'G-Funk'] }, correct_id: 1, time_limit: 1},
+    { data: { text: ' Janis Joplin, Jimi Hendrix, Jim Morrison and Kurt Cobain sind alle Mitglieder welches Clubs?',  options: ['Paradise Rock Club', 'Mile High Club', 'Club 27', 'Club Sector'] }, correct_id: 2, time_limit: 1},
+    { data: { text: 'Welcher dieser Schauspieler war auch als Musiker erfolgreich und erreichte unter anderem Gold in den USA und UK?', options: ['Vin Diesel','Jason Statham', 'Arnold Schwarzenegger', 'Bruce Willis']}, correct_id: 3, time_limit: 1},
+    { data: { text: 'Zu welchem Film/Serie gehört dieser Soundtrack?', youtube: 'https://www.youtube.com/embed/9LmmFetEWIg?autoplay=1&controls=0',  options: ['Der Herr der Ringe', 'Game of Thrones', 'Westworld', 'King Arthur'] }, correct_id: 1, time_limit: 1},
+    { data: { text: 'Die wievielte Symphonie Beethovens wird als die “unvollendete Symphonie” bezeichnet?', options: ['5.','9.', '10.', '13.']}, correct_id: 2, time_limit: 1},
+    { data: { text: 'Über welches Holz sangen die Beatles?',  options: ['Australian Wood', 'American Wood', 'Danish Wood', 'Norwegian Wood'] }, correct_id: 3, time_limit: 1},
+    // Spiele
+    { data: { text: 'The Royal Game of Ur gilt als das älteste Brettspiel der Welt. Aus welcher Zeit stammt das Spiel laut dem britischen Museum? (Bsp: 5 vChr = -5 | 5 nChr = 5)', options: []}, correct_id: -2500, time_limit: 1 },
+    { data: { text: 'Für welches dieser Kartenspiele werden keine deutschen Meisterschaften ausgetragen?', options: ['Skat', 'Rommé', 'Canasta', 'Schafkopf']}, correct_id: 2, time_limit: 1},
+    { data: { text: 'Welches dieser Spiele zählt nicht zu den 10 meistgespielten Spielen auf Steam des vergangenen Wochenendes (nach Peak-Spielerzahl)?', options: ['Monster Hunter: World', 'Rocket League', 'Counter Strike: Global Offensive', 'Team Fortress 2']}, correct_id: 1, time_limit: 1},
+    { data: { text: 'The Last of Us ist ein  Action-Adventure und Survival-Horror-Spiel. Wer ist neben Joel die zweitwichtigste Person in der Stroy?', options: ['Marlene', 'Ellie', 'David', 'Tommy']}, correct_id: 1, time_limit: 1},
+    { data: { text: 'Auf der MW2 Karte Terminal werden die Spieler in welche zwei Teams eingeteilt? ', options: ['Rangers gegen Speznas', 'SK 141 gegen OpFor', 'Task Force SK 141 gegen Miliz', 'Task Force SK 141 gegen Speznas']}, correct_id: 3, time_limit: 1},
+    { data: { text: 'Der amtierende Schachweltmeister Magnus Carlsen brach im Januar 2020 den Rekord für die längste Serie an ungeschlagenen (klassischen) Schachpartien, welche bis heute anhält. Wie viele Partien umfasst sie?', options: []}, correct_id: 118, time_limit: 1 },
+    // Gemischtwaren
+    { data: { text: 'Charlie Chaplin hat einmal bei einem Charlie-Chaplin-Doppelgänger-Wettbewerb teilgenommen. Welchen Platz hat er belegt?', options: ['1. Platz', '2. Platz', '3. Platz', '4. Platz']}, correct_id: 2, time_limit: 1},
+    { data: { text: 'In welchem Jahr sank die Titanic?', options: ['1912 ', '1903', '1898', '1914'] }, correct_id: 1, time_limit: 1 },
+    { data: { text: 'In wie vielen Nationalflaggen kommt die Farbe Lila vor?', options: ['0', '1', '2', '3'] }, correct_id: 2, time_limit: 2 },
+    { data: { text: 'Wenn man etwas beim Kochen in sehr feine, quadratische Streifen schneidet, schneidet man...', options: ['Julienne', 'Marielle', 'Bastienne', 'Emanuelle'] }, correct_id: 0, time_limit: 2 },
+    { data: { text: 'Vom Orakel von Delphi bis hin zu Nostradamus, seit eh und je versuchen sich Propheten an der Vorhersage der Zukunft. In der Moderne ist dabei überraschenderweise niemand so erfolgreich wie Die Simpsons, die der Realität oft Jahre voraus waren. Was wurde nicht von den Simpsons vorhergesagt?', options: ['NSA Massenüberwachung', 'Die Erfindung der Smartwatch', 'Die Präsidentschaft Trumps', 'Der Brand von Notre-Dame'] }, correct_id: 3, time_limit: 2 },
+    { data: { text: 'Wie viele Einkerbungen hat ein Golfball?', options: ['330 ', '336', '350', '328'] }, correct_id: 1, time_limit: 1 },
+    // Wissenschaft
+    { data: { text: 'Im Jahr 1969 betrat der erste Mensch den Mond. Welche Weltraummission brachte ihn dort hin?', options: ['Apollo 11', 'Apollo 8', 'Apollo 13', 'Gemini 8']}, correct_id: 0, time_limit: 1},
+    { data: { text: 'Unter dem Mikroskop sieht vieles anders aus. Was ist hier zu sehen?', image: 'img/micro.jpg', options: ['Wurzeln einer Orchidee', 'Schuppen eines Schmetterlingsflügels', 'Schleimhaut des Dünndarms', 'Polypen einer Koralle']}, correct_id: 1, time_limit: 1},
+    { data: { text: 'Durch zwei Extremwetter-Ereignisse hat eine Eidechsenart in der Karibik in nur zwei Jahren stark ihr Aussehen verändert. Wie haben die Forscher herausgefunden, welches Merkmal dafür ausschlaggebend war?', options: ['Eidechsen im Windkanal', 'Eidechsen im Whirlpool', 'Eidechsen im Aquarium', 'Eidechsen im Solarium']}, correct_id: 0, time_limit: 1},
+    { data: { text: 'Leonardo da Vinci gilt als einer der einflussreichsten Universalgelehrten aller Zeiten. Neben Wissenschaft, Kunst & Philosophie beschäftigte er sich auch mit dem Ingenieurwesen und entwarf zahlreiche Maschinen. Für was entwarf er kein Konzept? ', options: ['Panzer', 'Helikopter', 'Fallschirm', 'Flugzeug'] }, correct_id: 3, time_limit: 1 },
+    { data: { text: 'Kokain gehört zu den sogenannten Tropan-Alkaloiden und ist als Rauschmittel bekannt. Andere vertreter dieser chemischen Gruppe können allerdings auch zu pharmazeutischen Zwecken verwendet werden. Wofür?', options: ['Narkose bei OPs', 'Abführmittel', 'Beruhigungsmittel', 'Blutdrucksenkungsmittel']}, correct_id: 2, time_limit: 1},
+    { data: { text: 'Der Nobelpreis wird seit 1901 jährlich verliehen und ging 1903 mit Marie Curie erstmals an eine Frau. Der großteil der Preisträger seither ist jedoch männlich. Welche Kategorie hat mit 1:70 die niedrigste Quote an weiblichen Preisträgern?', options: ['Chemie', 'Physik', 'Wirtschaft', 'Medizin']}, correct_id: 1, time_limit: 1}
+]   
+
