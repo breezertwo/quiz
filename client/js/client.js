@@ -93,6 +93,7 @@ var app = new Vue({
             this.image = null;
             this.timeleft = null;
             this.state = this.QuizStates.WAITING;
+            this.input = ''
         },
         select: function(e) {
             if (this.state > this.QuizStates.SELECTED || this.timeLeft == 0) return;

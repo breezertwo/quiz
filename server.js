@@ -190,8 +190,9 @@ io.on('connection', function(socket) {
               getTeamById(winner.team_id).score += 1;
           }
 
-        } else if (data.answer_id == q.correct_id) {
-          t.score += 1;
+        } else  {
+          if (data.answer_id == q.correct_id)
+            t.score += 1;
           answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time: Date(), score: t.score });
         }
       }
