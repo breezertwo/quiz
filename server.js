@@ -37,7 +37,7 @@ store.on('error', function(error) {
 var sessionMiddle = session({
     secret: 'Super secret dot com',
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+      maxAge: 1000 * 60 * 60 * 24 * 1 // 1 day
     },
     store: store,
     resave: true,
@@ -64,10 +64,18 @@ var state = STATES.SIGNUP;
 var current_question = -1;
 
 app.get('/', function(req, res) {
+  
+  var startTime = moment('2020-05-11T20:30:00');
+  var now = moment();
+
+  if (now.isBefore(startTime)) {
+    res.sendFile(path.join(__dirname, 'client/timer.html'));
+  } else {
   if (!req.session.team_id)
     res.sendFile(path.join(__dirname, 'client/signup.html'));
   else
     res.sendFile(path.join(__dirname, 'client/index.html'));
+  }
 });
 
 app.get('/admin', function(req, res) {
