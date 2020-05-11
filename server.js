@@ -231,6 +231,8 @@ io.on('connection', function(socket) {
 
                 io.emit('show-answer', {question: q.data.text, answers});
 
+              } else if (q.data.options = '') {
+                io.emit('show-answer', {question: q.data.text, answers: q.correct_id});
               } else io.emit('show-answer', {question: q.data.text, answers: q.data.options[q.correct_id]});
               break;
             case 'request-reload':

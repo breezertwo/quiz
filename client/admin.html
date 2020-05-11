@@ -39,7 +39,7 @@
                     <button class="btn btn-4 btn-sep icon-answer" v-if="allAnswered() && !showNextButton" @click="onClickAnswer">Show Answer</button>
                 </div>
                 <hr>
-                <div class="fl message-container"v-for="answer in answers">
+                <div class="fl message-container"v-for="answer in answers.slice().reverse()">
                     Team-id: {{ answer.team_id }}
                     Question-id: {{ answer.question_id }}
                     Answer-id: {{ answer.answer_id }}
