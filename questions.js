@@ -1,5 +1,6 @@
 module.exports = [
     // Film & Fernsehen
+    { data: { text: 'Welchem Genre ist der folgende Song zuzuordnen?', youtube: 'https://www.youtube.com/watch?v=JjaUdqAu1vs',  options: ['Psychadelic Rock', 'Glam Rock', 'Surf Rock', 'G-Funk'] }, correct_id: 1, time_limit: 1},
     { data: { text: 'Die Telenovela Sturm der Liebe ist seit Jahren ein zentraler Bestandteil des Nachmittagsprogramms der ARD. Wieviele Folgen gibt es von ihr?)', options: []}, correct_id: 3376 , time_limit: 1 },
     { data: { text: 'Aus welchem Film ist diese Szene?', youtube: 'https://www.youtube.com/embed/5AnfMs_Vlac?autoplay=1&controls=0',  options: ['Fight Club', 'Seven', 'The Detective', 'Moneyball'] }, correct_id: 1, time_limit: 1},
     { data: { text: 'Welcher R-rated (vgl. FSK18) Film hat den größten Box-Office Gewinn aller Zeiten?',  options: ['Joker',  'Once Upon a Time... in Hollywood', 'Deadpool', 'The Matrix Reloaded'] }, correct_id: 0, time_limit: 1},
@@ -14,7 +15,6 @@ module.exports = [
     { data: { text: 'Wessen FuPa Spielerprofil hat die wenigsten Aufrufe? (Stand: 10.05.2020)',  options: ['Thomas Martinek', 'Lena Burkhart','Felix Gloger', 'Thomas Schmiedler'] }, correct_id: 1, time_limit: 1},
     { data: { text: 'Wieviele Stunden vor der geplanten Abfahrt hat Chris letztes Jahr in der Urlaubsgruppe abgesagt, weil er nach dem Stadtfest vom Fahrrad gefallen ist?', options: []}, correct_id: 18 , time_limit: 1 },
     // Musik
-    { data: { text: 'Welchem Genre ist der folgende Song zuzuordnen?', youtube: 'https://www.youtube.com/embed/JjaUdqAu1vs?autoplay=1&controls=0',  options: ['Psychadelic Rock', 'Glam Rock', 'Surf Rock', 'G-Funk'] }, correct_id: 1, time_limit: 1},
     { data: { text: ' Janis Joplin, Jimi Hendrix, Jim Morrison and Kurt Cobain sind alle Mitglieder welches Clubs?',  options: ['Paradise Rock Club', 'Mile High Club', 'Club 27', 'Club Sector'] }, correct_id: 2, time_limit: 1},
     { data: { text: 'Welcher dieser Schauspieler war auch als Musiker erfolgreich und erreichte unter anderem Gold in den USA und UK?', options: ['Vin Diesel','Jason Statham', 'Arnold Schwarzenegger', 'Bruce Willis']}, correct_id: 3, time_limit: 1},
     { data: { text: 'Zu welchem Film/Serie gehört dieser Soundtrack?', youtube: 'https://www.youtube.com/embed/9LmmFetEWIg?autoplay=1&controls=0',  options: ['Der Herr der Ringe', 'Game of Thrones', 'Westworld', 'King Arthur'] }, correct_id: 1, time_limit: 1},
@@ -29,7 +29,7 @@ module.exports = [
     { data: { text: 'Der amtierende Schachweltmeister Magnus Carlsen brach im Januar 2020 den Rekord für die längste Serie an ungeschlagenen (klassischen) Schachpartien, welche bis heute anhält. Wie viele Partien umfasst sie?', options: []}, correct_id: 118, time_limit: 1 },
     // Gemischtwaren
     { data: { text: 'Charlie Chaplin hat einmal bei einem Charlie-Chaplin-Doppelgänger-Wettbewerb teilgenommen. Welchen Platz hat er belegt?', options: ['1. Platz', '2. Platz', '3. Platz', '4. Platz']}, correct_id: 2, time_limit: 1},
-    { data: { text: 'In welchem Jahr sank die Titanic?', options: ['1912 ', '1903', '1898', '1914'] }, correct_id: 1, time_limit: 1 },
+    { data: { text: 'In welchem Jahr sank die Titanic?', options: ['1912 ', '1903', '1898', '1914'] }, correct_id: 0, time_limit: 1 },
     { data: { text: 'In wie vielen Nationalflaggen kommt die Farbe Lila vor?', options: ['0', '1', '2', '3'] }, correct_id: 2, time_limit: 2 },
     { data: { text: 'Wenn man etwas beim Kochen in sehr feine, quadratische Streifen schneidet, schneidet man...', options: ['Julienne', 'Marielle', 'Bastienne', 'Emanuelle'] }, correct_id: 0, time_limit: 2 },
     { data: { text: 'Vom Orakel von Delphi bis hin zu Nostradamus, seit eh und je versuchen sich Propheten an der Vorhersage der Zukunft. In der Moderne ist dabei überraschenderweise niemand so erfolgreich wie Die Simpsons, die der Realität oft Jahre voraus waren. Was wurde nicht von den Simpsons vorhergesagt?', options: ['NSA Massenüberwachung', 'Die Erfindung der Smartwatch', 'Die Präsidentschaft Trumps', 'Der Brand von Notre-Dame'] }, correct_id: 3, time_limit: 2 },
