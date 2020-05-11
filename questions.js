@@ -1,7 +1,7 @@
 module.exports = [
     // Film & Fernsehen    
-    { data: { text: 'Die Telenovela Sturm der Liebe ist seit Jahren ein zentraler Bestandteil des Nachmittagsprogramms der ARD. Wieviele Folgen gibt es von ihr?)', options: []}, correct_id: 3376 , time_limit: 1 },
-    { data: { text: 'Ordne folgende Trash-TV Formate ihrem Slogan zu!  A: Die Geissens, B: Abgestempelt, C: Daniela Katzenberger, D: The Mole',  options: ['Hans Sarpei will\'s wissen',  'Wem kannst du Trauen?', 'Familienglück auf Mallorca', 'Eine schrecklich glamouröse Familie'], order: [3, 0, 2, 1 ] }, correct_id: 0, time_limit: 1},
+    { data: { text: 'Die Telenovela Sturm der Liebe ist seit Jahren ein zentraler Bestandteil des Nachmittagsprogramms der ARD. Wieviele Folgen gibt es von ihr?', options: []}, correct_id: 3376 , time_limit: 1 },
+    { data: { text: 'Ordne folgende Trash-TV Formate ihrem Slogan zu!  A: Die Geissens, B: Abgestempelt, C: Daniela Katzenberger, D: The Mole',  options: ['Hans Sarpei will\'s wissen',  'Wem kannst du Trauen?', 'Familienglück auf Mallorca', 'Eine schrecklich glamouröse Familie'], order: [1, 3, 2, 0] }, correct_id: 0, time_limit: 1},
     { data: { text: 'Aus welchem Film ist diese Szene?', youtube: 'https://www.youtube.com/embed/5AnfMs_Vlac',  options: ['Fight Club', 'Seven', 'The Detective', 'Moneyball'] }, correct_id: 1, time_limit: 1},
     { data: { text: 'Welcher R-rated (vgl. FSK18) Film hat den größten Box-Office Gewinn aller Zeiten?',  options: ['Joker',  'Once Upon a Time... in Hollywood', 'Deadpool', 'The Matrix Reloaded'] }, correct_id: 0, time_limit: 1},
     { data: { text: 'Zu welchem dieser Filme gibt es keine Fortsetzung?',  options: ['Steven Spielberg’s: Jaws',  'Stanley Kubrick’s: The Shining', 'Alfred Hitchcock’s: Psycho', 'John Carpenter’s: The Thing'] }, correct_id: 3, time_limit: 1},

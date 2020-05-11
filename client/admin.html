@@ -39,10 +39,10 @@
                     <button class="btn btn-4 btn-sep icon-answer" v-if="allAnswered() && !showNextButton" @click="onClickAnswer">Show Answer</button>
                 </div>
                 <hr>
-                <div class="fl message-container"v-for="answer in answers.slice().reverse()">
-                    Team-id: {{ answer.team_id }}
-                    Question-id: {{ answer.question_id }}
-                    Answer-id: {{ answer.answer_id }}
+                <div class="fl message-container"v-for="answer in answers.slice().reverse().slice(0, teams.length)">
+                    Player: {{ getTeamById(answer.team_id).name }} | 
+                    Question: {{ answer.question_id }} |
+                    Answer: {{ answer.answer_id }} | 
                     Time: {{ answer.time }}
                 </div>
             </div>

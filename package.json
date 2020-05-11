@@ -14,6 +14,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "jpeg-autorotate": "^2.0.0",
+    "moment": "^2.25.3",
     "mongodb": "^2.2.11",
     "multer": "^1.2.0",
     "node-fetch": "^2.6.0",

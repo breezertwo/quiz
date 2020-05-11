@@ -49,12 +49,17 @@ var app = new Vue({
             return false;
         },
         allAnswered: function() {
-            if (this.teams.length == this.answers.filter(a => a.question_id === this.current_question).length)
+            if (1 == this.answers.filter(a => a.question_id === this.current_question).length)
                 return true;
             return false;
         },
         onReload: function() {
             // socket.emit('admin', { action: 'request-reload' });
+        },
+        getTeamById(id) {
+            return this.teams.filter(function(t) {
+                return (t.id == id);
+            })[0];
         }
     }
 });

@@ -9,9 +9,11 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
+var moment = require('moment');
 
 var teams = require('./teams.js');
 var config = require('./config.json');
+
 
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -171,18 +173,20 @@ io.on('connection', function(socket) {
     
     socket.on('submit', function(data) {
       socket.emit('ack', {});
-      var t = getTeamById(socket.request.session.team_id);
+      const  t = getTeamById(socket.request.session.team_id);
+      const time = moment().format();
+
       if (t) {
         var q = quiz.questions[current_question];
 
         if (q.data.order && data.order) {
           if (orderChecker(q.data.order, data.order, q.data.options))
             t.score += 1;
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.order, time: Date(), score: t.score });
+          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.order, time, score: t.score });
         } else if (data.input) {
 
           // has to be pushed before, because the answers object is used to award the point
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time: Date(), score: t.score });
+          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time, score: t.score });
 
           var currAnswers = answers.filter(a => a.question_id === current_question);
           if (currAnswers.length == teams.length) {
@@ -193,7 +197,7 @@ io.on('connection', function(socket) {
         } else  {
           if (data.answer_id == q.correct_id)
             t.score += 1;
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time: Date(), score: t.score });
+          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time, score: t.score });
         }
       }
       updateAdminStatus();
@@ -231,7 +235,7 @@ io.on('connection', function(socket) {
 
                 io.emit('show-answer', {question: q.data.text, answers});
 
-              } else if (q.data.options = '') {
+              } else if (q.data.options.length == 0) {
                 io.emit('show-answer', {question: q.data.text, answers: q.correct_id});
               } else io.emit('show-answer', {question: q.data.text, answers: q.data.options[q.correct_id]});
               break;
