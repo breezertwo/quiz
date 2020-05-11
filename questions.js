@@ -1,12 +1,11 @@
 module.exports = [
-    // Film & Fernsehen
-    { data: { text: 'Welchem Genre ist der folgende Song zuzuordnen?', youtube: 'https://www.youtube.com/watch?v=JjaUdqAu1vs',  options: ['Psychadelic Rock', 'Glam Rock', 'Surf Rock', 'G-Funk'] }, correct_id: 1, time_limit: 1},
+    // Film & Fernsehen    
     { data: { text: 'Die Telenovela Sturm der Liebe ist seit Jahren ein zentraler Bestandteil des Nachmittagsprogramms der ARD. Wieviele Folgen gibt es von ihr?)', options: []}, correct_id: 3376 , time_limit: 1 },
-    { data: { text: 'Aus welchem Film ist diese Szene?', youtube: 'https://www.youtube.com/embed/5AnfMs_Vlac?autoplay=1&controls=0',  options: ['Fight Club', 'Seven', 'The Detective', 'Moneyball'] }, correct_id: 1, time_limit: 1},
+    { data: { text: 'Ordne folgende Trash-TV Formate ihrem Slogan zu!  A: Die Geissens, B: Abgestempelt, C: Daniela Katzenberger, D: The Mole',  options: ['Hans Sarpei will\'s wissen',  'Wem kannst du Trauen?', 'Familienglück auf Mallorca', 'Eine schrecklich glamouröse Familie'], order: [3, 0, 2, 1 ] }, correct_id: 0, time_limit: 1},
+    { data: { text: 'Aus welchem Film ist diese Szene?', youtube: 'https://www.youtube.com/embed/5AnfMs_Vlac',  options: ['Fight Club', 'Seven', 'The Detective', 'Moneyball'] }, correct_id: 1, time_limit: 1},
     { data: { text: 'Welcher R-rated (vgl. FSK18) Film hat den größten Box-Office Gewinn aller Zeiten?',  options: ['Joker',  'Once Upon a Time... in Hollywood', 'Deadpool', 'The Matrix Reloaded'] }, correct_id: 0, time_limit: 1},
     { data: { text: 'Zu welchem dieser Filme gibt es keine Fortsetzung?',  options: ['Steven Spielberg’s: Jaws',  'Stanley Kubrick’s: The Shining', 'Alfred Hitchcock’s: Psycho', 'John Carpenter’s: The Thing'] }, correct_id: 3, time_limit: 1},
     { data: { text: 'Der Abschluss einer Serie markiert für alle Zuschauer einen besonderen Moment. Während es Serien wie Breaking Bad oder The Big Bang Theory geschafft haben, die Fans mit ihrer letzten Folge zu begeistern, gab es in der Vergangenheit leider auch einige Negativbeispiele. Ordne diese Serien nach der IMDb-Bewertung ihrer letzten Folge (schlechteste zu beste von links nach rechts).',  options: ['Dexter',  'How I Met Your Mother', 'Two and a Half Men', 'Game of Thrones'], order: [2, 3, 0, 1 ] }, correct_id: 0, time_limit: 1},
-    { data: { text: 'Ordne folgende Trash-TV Formate ihrem Slogan zu!  A: Die Geissens, B: Abgestempelt, C: Daniela Katzenberger, D: The Mole',  options: ['Hans Sarpei will\'s wissen',  'Wem kannst du Trauen?', 'Familienglück auf Mallorca', 'Eine schrecklich glamouröse Familie'], order: [3, 0, 2, 1 ] }, correct_id: 0, time_limit: 1},
     // Gang
     { data: { text: 'Wer hat diese Nachricht geschrieben?', image: 'img/wa_screen.jpg', options: ['Fex', 'Lena', 'Tom', 'Dubbi']}, correct_id: 2, time_limit: 1 },
     { data: { text: 'Chrissy denkt seit Jahren das Andys Dad sie nicht mögen würde. Aber warum?', options: ['Sie hat ein HDMI Kabel zerstört', 'Sie hat einen Muffin mit Senf gefüllt', 'Sie hat eine Lampe zerschossen', 'Sie hat ein Ferrero Rocher mit BBQ-Soße gefüllt']}, correct_id: 1, time_limit: 1 },
@@ -15,9 +14,10 @@ module.exports = [
     { data: { text: 'Wessen FuPa Spielerprofil hat die wenigsten Aufrufe? (Stand: 10.05.2020)',  options: ['Thomas Martinek', 'Lena Burkhart','Felix Gloger', 'Thomas Schmiedler'] }, correct_id: 1, time_limit: 1},
     { data: { text: 'Wieviele Stunden vor der geplanten Abfahrt hat Chris letztes Jahr in der Urlaubsgruppe abgesagt, weil er nach dem Stadtfest vom Fahrrad gefallen ist?', options: []}, correct_id: 18 , time_limit: 1 },
     // Musik
+    { data: { text: 'Welchem Genre ist der folgende Song zuzuordnen?', youtube: 'https://www.youtube.com/embed/JjaUdqAu1vs',  options: ['Psychadelic Rock', 'Glam Rock', 'Surf Rock', 'G-Funk'] }, correct_id: 1, time_limit: 1},
     { data: { text: ' Janis Joplin, Jimi Hendrix, Jim Morrison and Kurt Cobain sind alle Mitglieder welches Clubs?',  options: ['Paradise Rock Club', 'Mile High Club', 'Club 27', 'Club Sector'] }, correct_id: 2, time_limit: 1},
     { data: { text: 'Welcher dieser Schauspieler war auch als Musiker erfolgreich und erreichte unter anderem Gold in den USA und UK?', options: ['Vin Diesel','Jason Statham', 'Arnold Schwarzenegger', 'Bruce Willis']}, correct_id: 3, time_limit: 1},
-    { data: { text: 'Zu welchem Film/Serie gehört dieser Soundtrack?', youtube: 'https://www.youtube.com/embed/9LmmFetEWIg?autoplay=1&controls=0',  options: ['Der Herr der Ringe', 'Game of Thrones', 'Westworld', 'King Arthur'] }, correct_id: 1, time_limit: 1},
+    { data: { text: 'Zu welchem Film/Serie gehört dieser Soundtrack?', youtube: 'https://www.youtube.com/embed/9LmmFetEWIg',  options: ['Der Herr der Ringe', 'Game of Thrones', 'Westworld', 'King Arthur'] }, correct_id: 1, time_limit: 1},
     { data: { text: 'Die wievielte Symphonie Beethovens wird als die “unvollendete Symphonie” bezeichnet?', options: ['5.','9.', '10.', '13.']}, correct_id: 2, time_limit: 1},
     { data: { text: 'Über welches Holz sangen die Beatles?',  options: ['Australian Wood', 'American Wood', 'Danish Wood', 'Norwegian Wood'] }, correct_id: 3, time_limit: 1},
     // Spiele
