@@ -68,7 +68,7 @@ app.get('/', function(req, res) {
   var startTime = moment('2020-05-11T20:30:00');
   var now = moment();
 
-  if (now.isBefore(startTime)) {
+  if (false) {
     res.sendFile(path.join(__dirname, 'client/timer.html'));
   } else {
   if (!req.session.team_id)
