@@ -64,19 +64,12 @@ var state = STATES.SIGNUP;
 var current_question = -1;
 
 app.get('/', function(req, res) {
-  
-  var startTime = moment('2020-05-11T20:30:00');
-  var now = moment();
-
-  if (false) {
-    res.sendFile(path.join(__dirname, 'client/timer.html'));
-  } else {
   if (!req.session.team_id)
     res.sendFile(path.join(__dirname, 'client/signup.html'));
   else
     res.sendFile(path.join(__dirname, 'client/index.html'));
   }
-});
+);
 
 app.get('/admin', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/admin.html'));
@@ -107,16 +100,8 @@ app.use(express.static(path.join(__dirname, 'client')));
 
 var quote = [];
 
-async function getJoke(type){
-  let url = 'http://jokes.guyliangilsing.me/retrieveJokes.php?type=' + type;
-  let data = await(await fetch(url)).json();
-  quote = data
-}
-
 function updateAdminStatus() {
   io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: config });
-  getJoke("random")
-  io.emit('quote-update', { quote: quote});
 }
 
 function getTeamById(id) {
@@ -145,6 +130,7 @@ function getClosestAnswer(currAnswers, userAnswer){
 
   return currAnswers.filter(a => {return a.answer_id === output})
 }
+
 
 var interval = null;
 
@@ -196,12 +182,14 @@ io.on('connection', function(socket) {
           // has to be pushed before, because the answers object is used to award the point
           answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time, score: t.score });
 
-          var currAnswers = answers.filter(a => a.question_id === current_question);
-          if (currAnswers.length == teams.length) {
+          const currAnswers = answers.filter(a => a.question_id === current_question);
+          const countValue = (arr, key, value) => arr.filter(x => x[key] > value).length
+
+          console.log(countValue(teams, 'connections', 0))
+          if (currAnswers.length == countValue(teams, 'connections', 0)) {
             for (winner of getClosestAnswer(currAnswers, q.correct_id))
               getTeamById(winner.team_id).score += 1;
           }
-
         } else  {
           if (data.answer_id == q.correct_id)
             t.score += 1;
@@ -217,22 +205,33 @@ io.on('connection', function(socket) {
               if (interval)
                 clearInterval(interval);
               var question = quiz.questions[++current_question];
-              var quiz_msg = {...question.data, ...{question_id: current_question}}
+              if (question) {
+                var quiz_msg = {...question.data, ...{question_id: current_question}}
 
-              io.emit('quiz', quiz_msg);
+                io.emit('quiz', quiz_msg);
+                  
+                var timer = 10 * 60; // TODO: Make timer optional
+                interval = setInterval(function() {
+                  timer--;
+                  io.emit('timer', { timeLeft: timer });
+                  if (timer == 0) {
+                    clearInterval(interval);
+                  }
+                }, 1000);
                 
-              var timer = 10 * 60; // TODO: Make timer optional
-              interval = setInterval(function() {
-                timer--;
-                io.emit('timer', { timeLeft: timer });
-                if (timer == 0) {
-                  clearInterval(interval);
-                }
-              }, 1000);
-              
-             state = STATES.STARTED;
+               state = STATES.STARTED;
+              } else {
+                console.log('No more questions available')
+              }
               break;
-            case 'show-answer':
+          case 'show-answer':
+
+            fs.writeFile("stats.text", JSON.stringify(teams), 'utf8', function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+
               var q = quiz.questions[current_question];
               if (q.data.order) {
                 
@@ -247,10 +246,10 @@ io.on('connection', function(socket) {
                 io.emit('show-answer', {question: q.data.text, answers: q.correct_id});
               } else io.emit('show-answer', {question: q.data.text, answers: q.data.options[q.correct_id]});
               break;
-            case 'request-reload':
+          case 'request-reload':
               console.log('Not implemented yet');
               break;
-            default:
+          default:
               break;
         }
         updateAdminStatus();

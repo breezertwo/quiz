@@ -44,15 +44,5 @@ module.exports = [
     { data: { text: 'In unserem Alltag versteckt sich jede Menge Chemie. So läuft zum Beispiel beim Braten von Fleisch eine 7-stufige Reaktionen ab, welche unter anderem für dessen Bräunung sorgt. Wie heißt dieses Reaktion?', options: ['Maillard-Reaktion', 'Hiramoto-Reaktion', 'Young-Zyklus', 'Schleicher-Reaktion']}, correct_id: 0, time_limit: 1},
     { data: { text: 'Wie viel Liter Blut hat ein zirka 70 Kilogramm schwerer, erwachsener Mensch?', options: ['3 - 4L', '5 - 6L', '7 - 8L', '9 -1 0L']}, correct_id: 1, time_limit: 1},
     { data: { text: 'Durch zwei Extremwetter-Ereignisse hat eine Eidechsenart in der Karibik in nur zwei Jahren stark ihr Aussehen verändert. Wie haben die Forscher herausgefunden, welches Merkmal dafür ausschlaggebend war?', options: ['Eidechsen im Windkanal', 'Eidechsen im Whirlpool', 'Eidechsen im Aquarium', 'Eidechsen im Solarium']}, correct_id: 0, time_limit: 1},
-     // Gang
-     { data: { text: 'Wer aus dieser Runde hat diese Nachricht geschrieben?', image: 'img/wa_screen.jpg', options: ['Fex', 'Lena', 'Tom', 'Dubbi']}, correct_id: 2, time_limit: 1 },
-     { data: { text: 'Chrissy denkt seit Jahren das Andys Dad sie nicht mögen würde. Aber warum?', options: ['Sie hat ein HDMI Kabel zerstört', 'Sie hat einen Muffin mit Senf gefüllt', 'Sie hat eine Lampe zerschossen', 'Sie hat ein Ferrero Rocher mit BBQ-Soße gefüllt']}, correct_id: 1, time_limit: 1 },
-     { data: { text: 'Wie oft ist in der \'LoL 🤡-Fiesta\' Gruppe auf WhatsApp der Begriff ‘boostlord’ mittels Suchfunktion zu finden? (24.2.17 - heute)', options: []}, correct_id: 9 , time_limit: 1 },
-     { data: { text: 'Wer hat seinen aktuellen WhatsApp Status schon am längsten?',  options: ['Felix', 'Lena', 'Christian', 'Schmiedy'] }, correct_id: 3, time_limit: 1},
-     { data: { text: 'Wessen FuPa Spielerprofil hat die wenigsten Aufrufe? (Stand: 10.05.2020)',  options: ['Thomas Martinek', 'Lena Burkhart','Felix Gloger', 'Thomas Schmiedler'] }, correct_id: 1, time_limit: 1},
-     { data: { text: 'Der Renault Clio von Andy war 27 Jahre lang ein treuer Partner für seine beiden jeweiligen Besitzer. Mit wie vielen Kilometern auf dem Zähler hat es sich in seinen Ruhestand verabschiedet? (RIP 10.05.2020)', options: []}, correct_id: 69500 , time_limit: 1 },
-     { data: { text: 'Wieviele Stunden vor der geplanten Abfahrt hat Chris letztes Jahr in der Urlaubsgruppe abgesagt, weil er nach dem Stadtfest vom Fahrrad gefallen ist?', options: []}, correct_id: 18 , time_limit: 1 },
-     { data: { text: 'Welche Person hat diese Nachricht geschrieben?', image: 'img/wa_screen2.png', options: ['Chris H.', 'Dubbi', 'Chrissy', 'Laurin']}, correct_id: 1, time_limit: 1 },
-    
 ]   
 
