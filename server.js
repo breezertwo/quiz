@@ -50,7 +50,7 @@ io.use(function(socket, next) {
 });
 
 var quiz = {
-  questions: require('./questions.js')
+  questions: require('./questions_ta.js')
 };
 
 var answers = [];
@@ -75,9 +75,13 @@ app.get('/admin', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/admin.html'));
 });
 
-app.get('/tv', function(req, res) {
-  res.sendFile(path.join(__dirname, 'client/tv.html'));
+app.get('/results', function(req, res) {
+  res.sendFile(path.join(__dirname, 'client/results.html'));
 });
+
+/*app.get('/tv', function(req, res) {
+  res.sendFile(path.join(__dirname, 'client/tv.html'));
+});*/
 
 app.post('/upload', upload.single('image'), function(req, res, next) {
   
@@ -131,6 +135,19 @@ function getClosestAnswer(currAnswers, userAnswer){
   return currAnswers.filter(a => {return a.answer_id === output})
 }
 
+function gatherStats(){
+  let stats = {
+    teamnames: [],
+    points: []
+  }
+
+  for (let t of teams) {
+    stats.teamnames.push(t.name);
+    stats.points.push(t.score);
+  }
+
+  return stats;
+}
 
 var interval = null;
 
@@ -159,7 +176,7 @@ io.on('connection', function(socket) {
             return (a.question_id == current_question && a.team_id == t.id);
           });
 
-          if(answer.length == 0)
+          if(answer.length == 0 && quiz.questions[current_question] != undefined)
             var quiz_msg = {...quiz.questions[current_question].data, ...{question_id: current_question}}
             socket.emit('quiz', quiz_msg);
       }
@@ -185,7 +202,6 @@ io.on('connection', function(socket) {
           const currAnswers = answers.filter(a => a.question_id === current_question);
           const countValue = (arr, key, value) => arr.filter(x => x[key] > value).length
 
-          console.log(countValue(teams, 'connections', 0))
           if (currAnswers.length == countValue(teams, 'connections', 0)) {
             for (winner of getClosestAnswer(currAnswers, q.correct_id))
               getTeamById(winner.team_id).score += 1;
@@ -225,13 +241,13 @@ io.on('connection', function(socket) {
               }
               break;
           case 'show-answer':
-
-            fs.writeFile("stats.text", JSON.stringify(teams), 'utf8', function(err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-
+              /*fs.writeFile("stats.txt", JSON.stringify(teams), 'utf8', function(err) {
+                  if (err) {
+                      console.log(err);
+                  }
+              });
+              */
+             
               var q = quiz.questions[current_question];
               if (q.data.order) {
                 
@@ -245,6 +261,8 @@ io.on('connection', function(socket) {
               } else if (q.data.options.length == 0) {
                 io.emit('show-answer', {question: q.data.text, answers: q.correct_id});
               } else io.emit('show-answer', {question: q.data.text, answers: q.data.options[q.correct_id]});
+
+              socket.emit('recieve-graphdata', gatherStats())
               break;
           case 'request-reload':
               console.log('Not implemented yet');
@@ -253,6 +271,10 @@ io.on('connection', function(socket) {
               break;
         }
         updateAdminStatus();
+    });
+
+    socket.on('graph-rdy', function(data) {
+      socket.emit('recieve-graphdata', gatherStats())
     });
     
     if (!socket.request.session.team_id) {

@@ -1,6 +1,6 @@
 module.exports = [
 	{ id: 1, photo: '', name: 'Fex', members: [], score: 0, connections: 0 },
-	{ id: 2, photo: '', name: 'Tom', members: [], score: 0, connections: 0 },
+	{ id: 2, photo: '', name: 'Schmi3dy', members: [], score: 0, connections: 0 },
 	{ id: 3, photo: '', name: 'Chrissy', members: [], score: 0, connections: 0 },
 	{ id: 4, photo: '', name: 'Ka', members: [], score: 0, connections: 0 },
 	{ id: 5, photo: '', name: 'Franzi', members: [], score: 0, connections: 0 },

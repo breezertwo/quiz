@@ -1,0 +1,29 @@
+<!DOCTYPE html><html class=''>
+  <head>
+    <style>
+      .container {
+      width: 700px ;
+      margin-left: auto ;
+      margin-right: auto ;
+      padding-top: 10%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <section class="container">	
+	  <div class="columns">
+	    <div class="column">
+	      <chartjs-bar :labels="labels" :data="dataset" :bind="true"></chartjs-bar>
+	    </div>	    
+	  </div>    
+	</section>
+    </div>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js'></script>
+    <script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
+    <script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/results.js"></script>
+  </body>
+</html>
