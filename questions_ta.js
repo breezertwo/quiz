@@ -47,8 +47,17 @@ module.exports = [
      { data: { text: 'Aus welchem Jahr stammt dieses Profilbild?', image: 'img/fb.jpg', options: ['2008', '2010', '2012', '2014'] }, correct_id: 2, time_limit: 1 },  
      { data: { text: '2015 waren wir auf Europatour. Thommy wollte lieber noch aufs Splash. In welcher Stadt ist er zu uns gestoßen?', image: 'img/europa.jpg', options: ['Paris', 'London', 'Rom', 'Venedig'] }, correct_id: 0, time_limit: 1 },  
      { data: { text: 'Für die Klausur \'Diskrete Strukturen\' habe ich mehrere Anläufe gebraucht. Wie viele waren es?', options: []}, correct_id: 6, time_limit: 1 },  
-     { data: { text: 'Der YT-Kanal epicAPPLE1000 war der erste Channel auf dem ich Videos veröffentlicht habe. Wer war NICHT Teil des Teams?', options: ['Thomas Martinek', 'Fabian Haug', 'Nicolas Hagen', 'Maximilian Weigel']}, correct_id: 3, time_limit: 1 },  
+     { data: { text: 'Warum habe ich den Donnerstag von RiP 2017 verpasst?', options: ['Nicht durch die Kontrolle gekommen', 'Im Zug eingeschlafen', 'Lebensmittelvergiftung', 'Eintrittskarte vergessen']}, correct_id: 2, time_limit: 1 },  
      { data: { text: 'Insgesammt wurde ich 3 mal wegen illegaler Downloads abgemahnt. Wie hoch war die Summe die ich am Ende zahlen musste?', options: [] }, correct_id: 2000, time_limit: 1 },  
+     // about Thommy
+     { data: { text: 'Wie viele Paar Schuhe (inkl.) Fußballschuhe besitze ich mehrfach in verschiedenen Farben?', options: ['3', '5', '7', '9'] }, correct_id: 3, time_limit: 1 },  
+     { data: { text: 'Auf wie vielen verschiedenen Musikfestivals war ich bereits?', options: ['5', '6', '7', '8'] }, correct_id: 0, time_limit: 1 },  
+     { data: { text: 'Wie viele Monate befand ich mich bereits in einer Beziehung?', options: [] }, correct_id: 49, time_limit: 1 },  
+     { data: { text: 'In welchem Fach habe ich meine schlechteste Abiturnote?', options: ['Geographie', 'Deutsch', 'Physik', 'Englisch'] }, correct_id: 1, time_limit: 1 },  
+     { data: { text: 'Gegen wen spielten die Chicago Blackhawks das Winter Classic 2015?', options: ['Toronto Maple Leafs', 'Washingtopn Capitals', 'Pittsburgh Penguins', 'New York Rangers'] }, correct_id: 1, time_limit: 1 },  
+
+
+    
 
 
 
