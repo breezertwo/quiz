@@ -38,7 +38,7 @@
                         <h3>{{ question }}</h3> 
                     </div>
                     <div class="question-img-v-container">
-                        <img v-if="image" v-bind:src="image"></img>
+                        <img v-if="image" v-bind:src="image" style="max-width: 500px;"></img>
                         <iframe v-if="youtube" width="560" height="315" v-bind:src="youtube" frameborder="0"></iframe>
                     </div>
                     <div v-if="options.length == 0" class="answer-container">
