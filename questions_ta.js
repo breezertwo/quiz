@@ -1,4 +1,7 @@
 module.exports = [ 
+{ data: { text: 'Kann ich die mp3 datei hören?', image: 'mp3/test1.mp3', options: ['Ja', 'Nein']}, correct_id: 0, time_limit: 1 },
+{ data: { text: 'Wieviel ist dieses Outfit wert?', image: 'img/test.png', options: []}, correct_id: 557, time_limit: 1 },
+
 { data: { text: 'Der Alligator hat im Tierreich die stärkste Bisskraft',  options: ['Wahr', 'Falsch'] }, correct_id: 1, time_limit: 1},
 { data: { text: 'Bayern hat ca. 13 Milliionen Einwohner und ist damit das bevölkerungsreichste Bundesland Deutschlands',  options: ['Wahr', 'Falsch'] }, correct_id: 1, time_limit: 1},
 { data: { text: 'Rotkäppchen bringt im gleichnamigen Märchen der Gebrüder Grimm ihrer Großmutter eine Flasche Wein und Kekse',  options: ['Wahr', 'Falsch'] }, correct_id: 1, time_limit: 1},

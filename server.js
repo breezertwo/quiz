@@ -241,13 +241,6 @@ io.on('connection', function(socket) {
               }
               break;
           case 'show-answer':
-              /*fs.writeFile("stats.txt", JSON.stringify(teams), 'utf8', function(err) {
-                  if (err) {
-                      console.log(err);
-                  }
-              });
-              */
-             
               var q = quiz.questions[current_question];
               if (q.data.order) {
                 

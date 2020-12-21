@@ -23,7 +23,8 @@ var app = new Vue({
         question_number: null,
         timeLeft: null,
         quote: '',
-        input: ''
+        input: '',
+        mp3: null
     },
     created: function(e) {
         var that = this;
@@ -39,6 +40,7 @@ var app = new Vue({
             else that.youtube = null;
             if (data.hasOwnProperty('order')) that.order = data.order;
             else that.order = null;
+            if (data.hasOwnProperty('mp3')) that.mp3 = data.mp3;
             that.options = data.options;
             that.question_number = data.question_id;
 
@@ -108,6 +110,14 @@ var app = new Vue({
             else if (this.input !== '') socket.emit('submit', {input: this.input});
             else socket.emit('submit', {answer_id: this.answer_id} );
         },
+        toggleAudio() {
+            var audio = document.getElementById("audio-player");
+            if (audio.paused) {
+             audio.play();
+            } else {
+             audio.pause();
+            }
+           }
     }
 });
 
