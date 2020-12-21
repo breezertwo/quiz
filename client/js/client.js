@@ -116,16 +116,9 @@ var app = new Vue({
             this.state = this.QuizStates.SUBMITTING;
             if (this.order && this.order.length > 0) socket.emit('submit', {order: this.options} );
             else if (this.input !== '') socket.emit('submit', {input: this.input});
+            else if (this.answerType === this.AnswerStates.TEXT) socket.emit('submit', {text: this.options});
             else socket.emit('submit', {answer_id: this.answer_id} );
-        },
-        toggleAudio() {
-            var audio = document.getElementById("audio-player");
-            if (audio.paused) {
-             audio.play();
-            } else {
-             audio.pause();
-            }
-           }
+        }
     }
 });
 

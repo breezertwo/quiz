@@ -84,7 +84,7 @@ app.get('/results', function(req, res) {
 app.use(express.static(path.join(__dirname, 'client')));
 
 function updateAdminStatus() {
-  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: config });
+  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, version: process.env.npm_package_version});
 }
 
 function getTeamById(id) {

@@ -22,7 +22,7 @@ var app = new Vue({
             that.answers = data.answers;
             that.current_question = data.current_question;
             that.questions = data.questions;
-            that.version = data.info.version
+            that.version = data.version
         });
         socket.on('quiz', function(data) {
             that.question = data.text;
