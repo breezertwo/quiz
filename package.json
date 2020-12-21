@@ -1,6 +1,6 @@
 {
   "name": "quiz-app",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -13,12 +13,9 @@
     "connect-mongodb-session": "^2.4.1",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
-    "jpeg-autorotate": "^2.0.0",
     "moment": "^2.25.3",
-    "mongodb": "^2.2.11",
+    "mongodb": "^3.6.3",
     "multer": "^1.2.0",
-    "node-fetch": "^2.6.1",
-    "socket.io": "^1.6.0",
-    "vue-audio": "0.0.12"
+    "socket.io": "^3.0.4"
   }
 }

@@ -1,9 +1,6 @@
 var path = require('path');
-var fetch = require("node-fetch");
 var express = require('express');
 var multer = require('multer');
-var jo = require('jpeg-autorotate');
-var fs = require('fs');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
@@ -83,26 +80,8 @@ app.get('/results', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/tv.html'));
 });*/
 
-app.post('/upload', upload.single('image'), function(req, res, next) {
-  
-  var path = 'img/uploads/' + req.file.filename;
-  var realPath = './client/' + path;
-  
-  /* iOS stores image as landscape alwayds, and adds exif orientation. this fixes that */
-  jo.rotate(realPath, {quality: 85}, function(error, buffer, orientation) {
-    if (error) {
-       console.log('An error occurred when rotating the file: ' + error.message);
-       res.send(path);
-    } else {
-      fs.writeFile(realPath, buffer);
-      res.send(path);
-    };
-  });
-});
 
 app.use(express.static(path.join(__dirname, 'client')));
-
-var quote = [];
 
 function updateAdminStatus() {
   io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: config });
