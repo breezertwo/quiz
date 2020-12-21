@@ -177,7 +177,7 @@ io.on('connection', function(socket) {
           });
 
           if(answer.length == 0 && quiz.questions[current_question] != undefined)
-            var quiz_msg = {...quiz.questions[current_question].data, ...{question_id: current_question}}
+            var quiz_msg = {...quiz.questions[current_question].data, ...{question_id: current_question}, ...{answerType: quiz.questions[current_question].answerType}}
             socket.emit('quiz', quiz_msg);
       }
     });
@@ -222,7 +222,7 @@ io.on('connection', function(socket) {
                 clearInterval(interval);
               var question = quiz.questions[++current_question];
               if (question) {
-                var quiz_msg = {...question.data, ...{question_id: current_question}}
+                var quiz_msg = {...question.data, ...{question_id: current_question}, ...{answerType: quiz.questions[current_question].answerType}}
 
                 io.emit('quiz', quiz_msg);
                   

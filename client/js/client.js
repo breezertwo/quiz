@@ -1,6 +1,6 @@
+
 /*global io*/
 var socket = io();
-
 /*global Vue*/
 var app = new Vue({
     el: '#app',
@@ -13,6 +13,13 @@ var app = new Vue({
             WAITING: 5,
             ANSWER: 6  
         },
+        AnswerStates: {
+            STANDART: 1,
+            QUESS: 2,
+            TEXT: 3,
+            ORDER: 4
+        },
+        answerType: -1,
         state: -1,
         question: '',
         options: [],
@@ -34,6 +41,7 @@ var app = new Vue({
             that.reset();
             that.state = that.QuizStates.QUIZZING;
             that.question = data.text;
+            that.answerType = data.answerType
             if (data.hasOwnProperty('image')) that.image = data.image;
             else that.image = null
             if (data.hasOwnProperty('youtube')) that.youtube = data.youtube;
@@ -41,9 +49,9 @@ var app = new Vue({
             if (data.hasOwnProperty('order')) that.order = data.order;
             else that.order = null;
             if (data.hasOwnProperty('mp3')) that.mp3 = data.mp3;
+            else that.mp3 = null;
             that.options = data.options;
             that.question_number = data.question_id;
-
         }); 
 
         socket.on('show-answer', function(data) {

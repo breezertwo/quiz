@@ -10,14 +10,14 @@
   "author": "breezertwo",
   "license": "ISC",
   "dependencies": {
-    "connect-mongodb-session": "^1.3.0",
+    "connect-mongodb-session": "^2.4.1",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "jpeg-autorotate": "^2.0.0",
     "moment": "^2.25.3",
     "mongodb": "^2.2.11",
     "multer": "^1.2.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "socket.io": "^1.6.0",
     "vue-audio": "0.0.12"
   }
