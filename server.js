@@ -44,7 +44,8 @@ var answers = [];
 var STATES = {
   SIGNUP: 1,
   STARTED: 2,
-  WAITING: 3
+  WAITING: 3,
+  ENDED: 4
 };
 
 var answerTypes = {
@@ -154,7 +155,8 @@ io.on('connection', function(socket) {
 
           if(answer.length == 0 && quiz.questions[current_question] != undefined)
             var quiz_msg = {...quiz.questions[current_question].data, ...{question_id: current_question}, ...{answerType: quiz.questions[current_question].answerType}}
-            socket.emit('quiz', quiz_msg);
+          
+          socket.emit('quiz', quiz_msg);
       }
     });
     
@@ -189,7 +191,7 @@ io.on('connection', function(socket) {
                 t.score += 1;
               }
             }
-            answers.push({team_id: t.id, question_id: current_question, answer_id: JSON.stringify(q.correct_text), time, score: t.score});
+            answers.push({team_id: t.id, question_id: current_question, answer_id: JSON.stringify(data.text), time, score: t.score});
             break;
           case answerTypes.ORDER:
             const result = orderChecker(q.data.order, data.order, q.data.options)
@@ -204,7 +206,7 @@ io.on('connection', function(socket) {
     
     socket.on('admin', function(data) {
         switch (data.action) {
-            case 'next-question':
+          case 'next-question':
               if (interval)
                 clearInterval(interval);
               var question = quiz.questions[++current_question];
@@ -224,24 +226,32 @@ io.on('connection', function(socket) {
                 
                state = STATES.STARTED;
               } else {
+                state = STATES.ENDED
                 console.log('No more questions available')
+                io.emit('quiz-ended', {});
               }
               break;
           case 'show-answer':
               var q = quiz.questions[current_question];
-              if (q.data.order) {
-                
-                var answers = []
-                q.data.options.forEach(function (a, i) {
-                  answers[q.data.order[i]] = a;
-                }); 
 
-                io.emit('show-answer', {question: q.data.text, answers});
-
-              } else if (q.data.options.length == 0) {
-                io.emit('show-answer', {question: q.data.text, answers: q.correct_id});
-              } else io.emit('show-answer', {question: q.data.text, answers: q.data.options[q.correct_id]});
-
+              switch (q.answerType) {
+                case answerTypes.STANDART:
+                  io.emit('show-answer', {question: q.data, answers: q.data.options[q.correct_id]});
+                  break;
+                case answerTypes.QUESS:
+                  io.emit('show-answer', {question: q.data, answers: q.correct_id});
+                  break;
+                case answerTypes.TEXT:
+                  io.emit('show-answer', {question: q.data, answers: q.correct_text});
+                  break;
+                case answerTypes.ORDER:
+                  var answers = []
+                  q.data.options.forEach(function (a, i) {
+                    answers[q.data.order[i]] = a;
+                  }); 
+                  io.emit('show-answer', {question: q.data, answers});
+                  break;
+              }
               socket.emit('recieve-graphdata', gatherStats())
               break;
           case 'request-reload':

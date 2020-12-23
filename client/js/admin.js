@@ -12,6 +12,7 @@ var app = new Vue({
         version: -1,
         question: '',
         correct: false,
+        end: false,
         showNextButton: true
     },
 
@@ -26,6 +27,9 @@ var app = new Vue({
         });
         socket.on('quiz', function(data) {
             that.question = data.text;
+        });
+        socket.on('quiz-ended', function(data) {
+            that.end = true;
         });
         socket.on('show-answer', function(data) {
             that.question = 'Answer is displayed for clients'

@@ -13,12 +13,18 @@
                 <div class="waiting-dialog" v-if="state == QuizStates.WAITING">
                     <h2 v-if="!question_number">Weihnachtsquiz Quiz 2020</h2>
                     <h3 v-if="!question_number">Warte auf Start...</h3>
+                    <video autoplay loop playsinline>
+                        <source src="mp4/loadingDubbi.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <!--
                     <div class="sk-folding-cube">
                         <div class="sk-cube1 sk-cube"></div>
                         <div class="sk-cube2 sk-cube"></div>
                         <div class="sk-cube4 sk-cube"></div>
                         <div class="sk-cube3 sk-cube"></div>
                     </div>
+                    -->
                 </div>
                 <div class="answer-dialog" v-else-if="state == QuizStates.ANSWER">
                     <h3>Frage {{question_number+1}} - Lösung</h3>
@@ -32,44 +38,58 @@
                         <button v-for="(o, index) in options" class="button">{{ o }}</button>
                     </div>
                 </div>
+                <div v-if="state == QuizStates.ENDED">
+                    <iframe src="https://giphy.com/embed/dUZ7kyYS4owdrxhrUc" width="213" height="240" frameBorder="0" class="giphy-embed" ></iframe>
+                    <a href="/results" title="Ergebniss">
+                        Zum Ergebniss
+                    </a>
+                </div>
                 <div v-else>
-                    <h3>Frage {{question_number+1}} - Zeit {{ minutesLeft }}:{{ secondsLeft }}</h3>
-                    <div class="question-container">
-                        <h3>{{ question }}</h3> 
-                    </div>
-                    <div class="question-img-v-container">
-                        <img v-if="image" v-bind:src="image" style="max-width: 500px;"></img>
-                        <iframe v-if="youtube" width="560" height="315" v-bind:src="youtube" frameborder="0"></iframe>
-                        <audio v-if="mp3" id="audio-player" v-bind:src="mp3" controls></audio>
-                    </div>
-                    <!-- quess questions -->
-                    <div v-if="answerType == AnswerStates.QUESS" class="answer-container">
-                        <input type="text" id="input" v-model="input" />
-                    </div>
-                    <!-- Standard answers -->
-                    <div v-else-if="answerType == AnswerStates.STANDART" class="answer-container">
-                        <button v-for="(o, index) in options" @click.prevent="select" class="button" v-bind:id="index" v-bind:class="index == answer_id ? 'button-selected' : ''">{{ o }}</button>
-                    </div>
-                    <!-- order answers -->
-                    <div v-else-if="answerType == AnswerStates.ORDER" class="answer-container order">
-                        <draggable v-model="options" @start="drag=true" @end="drag=false">
-                            <button v-for="(o, index) in options" @click.prevent="select" class="button" v-bind:id="index" v-bind:class="index == answer_id ? 'button-selected' : ''">{{ o }}</button>
-                         </draggable>
-                    </div>
-                    <!-- text questions -->
-                    <div v-else-if="answerType == AnswerStates.TEXT" class="answer-container">
-                        <input type="text" v-for="(o, index) in options" v-bind:id="index" v-model="options[index]"></button>
-                    </div>
-                    <div class="submit-container">
-                        <button v-if="state == QuizStates.SELECTED || ((order || options.length == 0) && state !== QuizStates.SUBMITTED) || answerType == AnswerStates.TEXT" @click.prevent="submit" class="button button-submit">Submit</button>
-                        <div v-if="state == QuizStates.SUBMITTING" class="sk-folding-cube">
-                            <div class="sk-cube1 sk-cube"></div>
-                            <div class="sk-cube2 sk-cube"></div>
-                            <div class="sk-cube4 sk-cube"></div>
-                            <div class="sk-cube3 sk-cube"></div>
+                    <div v-if="state == QuizStates.QUIZZING || state == QuizStates.SELECTED">
+                        <h3>Frage {{question_number+1}} - {{ category }}</h3>
+                        <div class="question-container">
+                            <h3>{{ question }}</h3> 
                         </div>
-                        <div v-if="state == QuizStates.SUBMITTED">
+                        <div class="question-img-v-container">
+                            <img v-if="image" v-bind:src="image" style="max-width: 500px;"></img>
+                            <iframe v-if="youtube" width="560" height="315" v-bind:src="youtube" frameborder="0"></iframe>
+                            <audio v-if="mp3" id="audio-player" v-bind:src="mp3" controls></audio>
+                        </div>
+                        <!-- quess questions -->
+                        <div v-if="answerType == AnswerStates.QUESS" class="answer-container">
+                            <input type="text" id="input" v-model="input" />
+                        </div>
+                        <!-- Standard answers -->
+                        <div v-else-if="answerType == AnswerStates.STANDART" class="answer-container">
+                            <button v-for="(o, index) in options" @click.prevent="select" class="button" v-bind:id="index" v-bind:class="index == answer_id ? 'button-selected' : ''">{{ o }}</button>
+                        </div>
+                        <!-- order answers -->
+                        <div v-else-if="answerType == AnswerStates.ORDER" class="answer-container order">
+                            <draggable v-model="options" @start="drag=true" @end="drag=false">
+                                <button v-for="(o, index) in options" @click.prevent="select" class="button" v-bind:id="index" v-bind:class="index == answer_id ? 'button-selected' : ''">{{ o }}</button>
+                            </draggable>
+                        </div>
+                        <!-- text questions -->
+                        <div v-else-if="answerType == AnswerStates.TEXT" class="answer-container">
+                            <input type="text" v-for="(o, index) in options" v-bind:id="index" v-model="options[index]"></button>
+                        </div>
+                    </div>
+                    <div class="submit-container" v-if="state !== QuizStates.ANSWER">
+                        <div v-if="state === QuizStates.SUBMITTED">
                             <i class="material-icons checkmark">done</i>
+                            <h3>Warte bis alle die Frage beantwortet haben...</h3>
+                            <iframe src="https://giphy.com/embed/SWVzkIlHdEckF81gnA" width="213" height="240" frameBorder="0" class="giphy-embed" ></iframe>
+                        </div>
+                        <div v-else>
+                            <div v-if="state !== QuizStates.WAITING">
+                                <button v-if="state == QuizStates.SELECTED || ((order || options.length == 0) && state !== QuizStates.SUBMITTED) || answerType == AnswerStates.TEXT" @click.prevent="submit" class="button button-submit">Submit</button>
+                                <div v-if="state == QuizStates.SUBMITTING" class="sk-folding-cube">
+                                    <div class="sk-cube1 sk-cube"></div>
+                                    <div class="sk-cube2 sk-cube"></div>
+                                    <div class="sk-cube4 sk-cube"></div>
+                                    <div class="sk-cube3 sk-cube"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
