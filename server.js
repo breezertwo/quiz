@@ -1,26 +1,15 @@
 var path = require('path');
 var express = require('express');
-var multer = require('multer');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 var moment = require('moment');
+var { distance } = require('fastest-levenshtein')
+
 
 var teams = require('./teams.js');
-var config = require('./config.json');
-
-
-var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, path.join(__dirname, 'client', 'img', 'uploads'));
-  },
-  filename: function(req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-})
-var upload = multer({storage: storage, dest: 'client/img/uploads/'});
 
 var store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
@@ -57,6 +46,14 @@ var STATES = {
   STARTED: 2,
   WAITING: 3
 };
+
+var answerTypes = {
+  STANDART: 1,
+  QUESS: 2,
+  TEXT: 3,
+  ORDER: 4
+};
+
 var state = STATES.SIGNUP;
 var current_question = -1;
 
@@ -169,28 +166,39 @@ io.on('connection', function(socket) {
       if (t) {
         var q = quiz.questions[current_question];
 
-        if (q.data.order && data.order) {
-          if (orderChecker(q.data.order, data.order, q.data.options))
-            t.score += 1;
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.order, time, score: t.score });
-        } else if (data.input) {
+        switch (data.answerType) {
+          case answerTypes.STANDART:
+            if (data.answer_id == q.correct_id) t.score += 1;
+            answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time, score: t.score });
+            break;
+          case answerTypes.QUESS:
+            // has to be pushed before, because the answers object is used to award the point
+            answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time, score: t.score });
 
-          // has to be pushed before, because the answers object is used to award the point
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time, score: t.score });
-
-          const currAnswers = answers.filter(a => a.question_id === current_question);
-          const countValue = (arr, key, value) => arr.filter(x => x[key] > value).length
-
-          if (currAnswers.length == countValue(teams, 'connections', 0)) {
-            for (winner of getClosestAnswer(currAnswers, q.correct_id))
-              getTeamById(winner.team_id).score += 1;
-          }
-        } else  {
-          if (data.answer_id == q.correct_id)
-            t.score += 1;
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time, score: t.score });
+            const currAnswers = answers.filter(a => a.question_id === current_question);
+            const countValuesBiggerThan = (arr, key, value) => arr.filter(x => x[key] > value).length
+  
+            if (currAnswers.length == countValuesBiggerThan(teams, 'connections', 0)) {
+              for (winner of getClosestAnswer(currAnswers, q.correct_id))
+                getTeamById(winner.team_id).score += 1;
+            }
+            break;
+          case answerTypes.TEXT:
+            for (var [i, entries] of data.text.entries()) {
+              if (distance(entries, q.correct_text[i]) < 2 ) {
+                t.score += 1;
+              }
+            }
+            answers.push({team_id: t.id, question_id: current_question, answer_id: JSON.stringify(q.correct_text), time, score: t.score});
+            break;
+          case answerTypes.ORDER:
+            const result = orderChecker(q.data.order, data.order, q.data.options)
+            if (result) t.score += 1;
+            answers.push({ team_id: t.id, question_id: current_question, answer_id: data.order, time, score: t.score, result});
+            break;
         }
       }
+
       updateAdminStatus();
     });
     

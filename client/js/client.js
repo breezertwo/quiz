@@ -114,10 +114,11 @@ var app = new Vue({
         },
         submit: function(e) {
             this.state = this.QuizStates.SUBMITTING;
-            if (this.order && this.order.length > 0) socket.emit('submit', {order: this.options} );
-            else if (this.input !== '') socket.emit('submit', {input: this.input});
-            else if (this.answerType === this.AnswerStates.TEXT) socket.emit('submit', {text: this.options});
-            else socket.emit('submit', {answer_id: this.answer_id} );
+            
+            if (this.answerType === this.AnswerStates.ORDER) socket.emit('submit', {order: this.options, answerType: this.answerType});
+            else if (this.answerType === this.AnswerStates.QUESS) socket.emit('submit', {input: this.input, answerType: this.answerType});
+            else if (this.answerType === this.AnswerStates.TEXT) socket.emit('submit', {text: this.options, answerType: this.answerType});
+            else socket.emit('submit', {answer_id: this.answer_id, answerType: this.answerType});
         }
     }
 });

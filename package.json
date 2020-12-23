@@ -13,6 +13,7 @@
     "connect-mongodb-session": "^2.4.1",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
+    "fastest-levenshtein": "^1.0.12",
     "moment": "^2.25.3",
     "mongodb": "^3.6.3",
     "multer": "^1.2.0",
