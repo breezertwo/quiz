@@ -13,4 +13,7 @@ module.exports = [
 	{ id: 12, photo: '', name: 'Jojo', members: [], score: 0, connections: 0 },
 	{ id: 13, photo: '', name: 'Kai', members: [], score: 0, connections: 0 },
 	{ id: 14, photo: '', name: 'Andy H.', members: [], score: 0, connections: 0 },
+	{ id: 15, photo: '', name: 'gast 1', members: [], score: 0, connections: 0 },
+	{ id: 16, photo: '', name: 'gast 2', members: [], score: 0, connections: 0 },
+
 ]
