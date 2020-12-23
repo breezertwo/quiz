@@ -31,6 +31,7 @@
                     <div class="question-container">
                         <h3>{{ question }}</h3>
                     </div>
+                    <img v-if="answerImage" v-bind:src="answerImage" style="max-width: 500px;"></img>
                     <div v-if="!order" class="answer-container">
                         <button class="button" >{{ options }}</button>
                     </div>
@@ -54,6 +55,10 @@
                             <img v-if="image" v-bind:src="image" style="max-width: 500px;"></img>
                             <iframe v-if="youtube" width="560" height="315" v-bind:src="youtube" frameborder="0"></iframe>
                             <audio v-if="mp3" id="audio-player" v-bind:src="mp3" controls></audio>
+                            <video v-if="mp4" controls width="560" height="315"> 
+                                <source v-bind:src="mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                         <!-- quess questions -->
                         <div v-if="answerType == AnswerStates.QUESS" class="answer-container">

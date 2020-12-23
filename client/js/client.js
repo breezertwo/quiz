@@ -26,6 +26,7 @@ var app = new Vue({
         options: [],
         image: null,
         youtube: null,
+        answerImage: null,
         order: [],
         answer_id: -1,
         question_number: null,
@@ -33,6 +34,7 @@ var app = new Vue({
         quote: '',
         input: '',
         mp3: null,
+        mp4: null,
         category: ''
     },
     created: function(e) {
@@ -56,6 +58,8 @@ var app = new Vue({
                 else that.order = null;
                 if (data.hasOwnProperty('mp3')) that.mp3 = data.mp3;
                 else that.mp3 = null;
+                if (data.hasOwnProperty('mp4')) that.mp4 = data.mp4;
+                else that.mp4 = null;
                 that.options = data.options;
                 that.question_number = data.question_id;
             } else {
@@ -68,6 +72,8 @@ var app = new Vue({
             that.question = data.question.text;
             that.category = data.question.category;
             that.options = data.answers;
+            if (data.answerImage) that.answerImage = data.answerImage;
+            else that.answerImage = null;
         });
         
         socket.on('reset', function() {

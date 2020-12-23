@@ -187,7 +187,7 @@ io.on('connection', function(socket) {
             break;
           case answerTypes.TEXT:
             for (var [i, entries] of data.text.entries()) {
-              if (distance(entries, q.correct_text[i]) < 2 ) {
+              if (distance(entries.toLowerCase(), q.correct_text[i].toLowerCase()) < 2 ) {
                 t.score += 1;
               }
             }
@@ -236,20 +236,20 @@ io.on('connection', function(socket) {
 
               switch (q.answerType) {
                 case answerTypes.STANDART:
-                  io.emit('show-answer', {question: q.data, answers: q.data.options[q.correct_id]});
+                  io.emit('show-answer', {question: q.data, answers: q.data.options[q.correct_id], answerImage: q.answerImage});
                   break;
                 case answerTypes.QUESS:
-                  io.emit('show-answer', {question: q.data, answers: q.correct_id});
+                  io.emit('show-answer', {question: q.data, answers: q.correct_id, answerImage: q.answerImage});
                   break;
                 case answerTypes.TEXT:
-                  io.emit('show-answer', {question: q.data, answers: q.correct_text});
+                  io.emit('show-answer', {question: q.data, answers: q.correct_text, answerImage: q.answerImage});
                   break;
                 case answerTypes.ORDER:
                   var answers = []
                   q.data.options.forEach(function (a, i) {
                     answers[q.data.order[i]] = a;
                   }); 
-                  io.emit('show-answer', {question: q.data, answers});
+                  io.emit('show-answer', {question: q.data, answers, answerImage: q.answerImage});
                   break;
               }
               socket.emit('recieve-graphdata', gatherStats())
