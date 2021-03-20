@@ -1,6 +1,6 @@
+
 /*global io*/
 var socket = io();
-
 /*global Vue*/
 var app = new Vue({
     el: '#app',
@@ -11,19 +11,31 @@ var app = new Vue({
             SUBMITTING: 3,
             SUBMITTED: 4,
             WAITING: 5,
-            ANSWER: 6  
+            ANSWER: 6,
+            ENDED: 7 
         },
+        AnswerStates: {
+            STANDART: 1,
+            QUESS: 2,
+            TEXT: 3,
+            ORDER: 4
+        },
+        answerType: -1,
         state: -1,
         question: '',
         options: [],
         image: null,
         youtube: null,
+        answerImage: null,
         order: [],
         answer_id: -1,
         question_number: null,
         timeLeft: null,
         quote: '',
-        input: ''
+        input: '',
+        mp3: null,
+        mp4: null,
+        category: ''
     },
     created: function(e) {
         var that = this;
@@ -31,30 +43,48 @@ var app = new Vue({
         this.state = this.QuizStates.WAITING;
         socket.on('quiz', function(data) {
             that.reset();
-            that.state = that.QuizStates.QUIZZING;
-            that.question = data.text;
-            if (data.hasOwnProperty('image')) that.image = data.image;
-            else that.image = null
-            if (data.hasOwnProperty('youtube')) that.youtube = data.youtube;
-            else that.youtube = null;
-            if (data.hasOwnProperty('order')) that.order = data.order;
-            else that.order = null;
-            that.options = data.options;
-            that.question_number = data.question_id;
 
+            if (data) {
+                that.state = that.QuizStates.QUIZZING;
+
+                that.question = data.text;
+                that.answerType = data.answerType
+                that.category = data.category;
+                if (data.hasOwnProperty('image')) that.image = data.image;
+                else that.image = null
+                if (data.hasOwnProperty('youtube')) that.youtube = data.youtube;
+                else that.youtube = null;
+                if (data.hasOwnProperty('order')) that.order = data.order;
+                else that.order = null;
+                if (data.hasOwnProperty('mp3')) that.mp3 = data.mp3;
+                else that.mp3 = null;
+                if (data.hasOwnProperty('mp4')) that.mp4 = data.mp4;
+                else that.mp4 = null;
+                that.options = data.options;
+                that.question_number = data.question_id;
+            } else {
+                that.state = that.QuizStates.SUBMITTED;
+            }
         }); 
 
         socket.on('show-answer', function(data) {
             that.state = that.QuizStates.ANSWER;
-            that.question = data.question;
+            that.question = data.question.text;
+            that.category = data.question.category;
             that.options = data.answers;
+            if (data.answerImage) that.answerImage = data.answerImage;
+            else that.answerImage = null;
         });
         
-        socket.on('reset', function(data) {
+        socket.on('reset', function() {
             that.reset();
         });
 
-        socket.on('ack', function(data) {
+        socket.on('quiz-ended', function() {
+            that.state = that.QuizStates.ENDED;
+        });
+
+        socket.on('ack', function() {
             that.state = that.QuizStates.SUBMITTED;
         });
         
@@ -102,12 +132,18 @@ var app = new Vue({
             if (this.options.length == 1)
                 this.submit();
         },
-        submit: function(e) {
-            this.state = this.QuizStates.SUBMITTING;
-            if (this.order && this.order.length > 0) socket.emit('submit', {order: this.options} );
-            else if (this.input !== '') socket.emit('submit', {input: this.input});
-            else socket.emit('submit', {answer_id: this.answer_id} );
-        },
+        submit: function() {
+            
+            if (this.state !== this.QuizStates.SUBMITTED) {
+                this.state = this.QuizStates.SUBMITTING;
+                
+                if (this.answerType === this.AnswerStates.ORDER) socket.emit('submit', {order: this.options, answerType: this.answerType});
+                else if (this.answerType === this.AnswerStates.QUESS) socket.emit('submit', {input: this.input, answerType: this.answerType});
+                else if (this.answerType === this.AnswerStates.TEXT) socket.emit('submit', {text: this.options, answerType: this.answerType});
+                else socket.emit('submit', {answer_id: this.answer_id, answerType: this.answerType});
+            }
+         
+        }
     }
 });
 

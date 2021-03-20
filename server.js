@@ -1,29 +1,15 @@
 var path = require('path');
-var fetch = require("node-fetch");
 var express = require('express');
-var multer = require('multer');
-var jo = require('jpeg-autorotate');
-var fs = require('fs');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 var moment = require('moment');
+var { distance } = require('fastest-levenshtein')
 
 var teams = require('./teams.js');
-var config = require('./config.json');
-
-
-var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, path.join(__dirname, 'client', 'img', 'uploads'));
-  },
-  filename: function(req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-})
-var upload = multer({storage: storage, dest: 'client/img/uploads/'});
+var packageJSON = require('./package.json')
 
 var store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
@@ -50,7 +36,7 @@ io.use(function(socket, next) {
 });
 
 var quiz = {
-  questions: require('./questions_ta.js')
+  questions: require('./questions.js')
 };
 
 var answers = [];
@@ -58,8 +44,17 @@ var answers = [];
 var STATES = {
   SIGNUP: 1,
   STARTED: 2,
-  WAITING: 3
+  WAITING: 3,
+  ENDED: 4
 };
+
+var answerTypes = {
+  STANDART: 1,
+  QUESS: 2,
+  TEXT: 3,
+  ORDER: 4
+};
+
 var state = STATES.SIGNUP;
 var current_question = -1;
 
@@ -79,33 +74,10 @@ app.get('/results', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/results.html'));
 });
 
-/*app.get('/tv', function(req, res) {
-  res.sendFile(path.join(__dirname, 'client/tv.html'));
-});*/
-
-app.post('/upload', upload.single('image'), function(req, res, next) {
-  
-  var path = 'img/uploads/' + req.file.filename;
-  var realPath = './client/' + path;
-  
-  /* iOS stores image as landscape alwayds, and adds exif orientation. this fixes that */
-  jo.rotate(realPath, {quality: 85}, function(error, buffer, orientation) {
-    if (error) {
-       console.log('An error occurred when rotating the file: ' + error.message);
-       res.send(path);
-    } else {
-      fs.writeFile(realPath, buffer);
-      res.send(path);
-    };
-  });
-});
-
 app.use(express.static(path.join(__dirname, 'client')));
 
-var quote = [];
-
 function updateAdminStatus() {
-  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, info: config });
+  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, version: packageJSON.version});
 }
 
 function getTeamById(id) {
@@ -177,8 +149,9 @@ io.on('connection', function(socket) {
           });
 
           if(answer.length == 0 && quiz.questions[current_question] != undefined)
-            var quiz_msg = {...quiz.questions[current_question].data, ...{question_id: current_question}}
-            socket.emit('quiz', quiz_msg);
+            var quiz_msg = {...quiz.questions[current_question].data, ...{question_id: current_question}, ...{answerType: quiz.questions[current_question].answerType}}
+          
+          socket.emit('quiz', quiz_msg);
       }
     });
     
@@ -190,39 +163,50 @@ io.on('connection', function(socket) {
       if (t) {
         var q = quiz.questions[current_question];
 
-        if (q.data.order && data.order) {
-          if (orderChecker(q.data.order, data.order, q.data.options))
-            t.score += 1;
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.order, time, score: t.score });
-        } else if (data.input) {
+        switch (data.answerType) {
+          case answerTypes.STANDART:
+            if (data.answer_id == q.correct_id) t.score += 1;
+            answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time, score: t.score });
+            break;
+          case answerTypes.QUESS:
+            // has to be pushed before, because the answers object is used to award the point
+            answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time, score: t.score });
 
-          // has to be pushed before, because the answers object is used to award the point
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.input, time, score: t.score });
-
-          const currAnswers = answers.filter(a => a.question_id === current_question);
-          const countValue = (arr, key, value) => arr.filter(x => x[key] > value).length
-
-          if (currAnswers.length == countValue(teams, 'connections', 0)) {
-            for (winner of getClosestAnswer(currAnswers, q.correct_id))
-              getTeamById(winner.team_id).score += 1;
-          }
-        } else  {
-          if (data.answer_id == q.correct_id)
-            t.score += 1;
-          answers.push({ team_id: t.id, question_id: current_question, answer_id: data.answer_id, time, score: t.score });
+            const currAnswers = answers.filter(a => a.question_id === current_question);
+            const countValuesBiggerThan = (arr, key, value) => arr.filter(x => x[key] > value).length
+  
+            if (currAnswers.length == countValuesBiggerThan(teams, 'connections', 0)) {
+              for (winner of getClosestAnswer(currAnswers, q.correct_id))
+                getTeamById(winner.team_id).score += 1;
+            }
+            break;
+          case answerTypes.TEXT:
+            for (var [i, entries] of data.text.entries()) {
+              if (distance(entries.toLowerCase(), q.correct_text[i].toLowerCase()) < 2 ) {
+                t.score += 1;
+              }
+            }
+            answers.push({team_id: t.id, question_id: current_question, answer_id: JSON.stringify(data.text), time, score: t.score});
+            break;
+          case answerTypes.ORDER:
+            const result = orderChecker(q.data.order, data.order, q.data.options)
+            if (result) t.score += 1;
+            answers.push({ team_id: t.id, question_id: current_question, answer_id: data.order, time, score: t.score, result});
+            break;
         }
       }
+
       updateAdminStatus();
     });
     
     socket.on('admin', function(data) {
         switch (data.action) {
-            case 'next-question':
+          case 'next-question':
               if (interval)
                 clearInterval(interval);
               var question = quiz.questions[++current_question];
               if (question) {
-                var quiz_msg = {...question.data, ...{question_id: current_question}}
+                var quiz_msg = {...question.data, ...{question_id: current_question}, ...{answerType: quiz.questions[current_question].answerType}}
 
                 io.emit('quiz', quiz_msg);
                   
@@ -237,31 +221,32 @@ io.on('connection', function(socket) {
                 
                state = STATES.STARTED;
               } else {
+                state = STATES.ENDED
                 console.log('No more questions available')
+                io.emit('quiz-ended', {});
               }
               break;
           case 'show-answer':
-              /*fs.writeFile("stats.txt", JSON.stringify(teams), 'utf8', function(err) {
-                  if (err) {
-                      console.log(err);
-                  }
-              });
-              */
-             
               var q = quiz.questions[current_question];
-              if (q.data.order) {
-                
-                var answers = []
-                q.data.options.forEach(function (a, i) {
-                  answers[q.data.order[i]] = a;
-                }); 
 
-                io.emit('show-answer', {question: q.data.text, answers});
-
-              } else if (q.data.options.length == 0) {
-                io.emit('show-answer', {question: q.data.text, answers: q.correct_id});
-              } else io.emit('show-answer', {question: q.data.text, answers: q.data.options[q.correct_id]});
-
+              switch (q.answerType) {
+                case answerTypes.STANDART:
+                  io.emit('show-answer', {question: q.data, answers: q.data.options[q.correct_id], answerImage: q.answerImage});
+                  break;
+                case answerTypes.QUESS:
+                  io.emit('show-answer', {question: q.data, answers: q.correct_id, answerImage: q.answerImage});
+                  break;
+                case answerTypes.TEXT:
+                  io.emit('show-answer', {question: q.data, answers: q.correct_text, answerImage: q.answerImage});
+                  break;
+                case answerTypes.ORDER:
+                  var answers = []
+                  q.data.options.forEach(function (a, i) {
+                    answers[q.data.order[i]] = a;
+                  }); 
+                  io.emit('show-answer', {question: q.data, answers, answerImage: q.answerImage});
+                  break;
+              }
               socket.emit('recieve-graphdata', gatherStats())
               break;
           case 'request-reload':
