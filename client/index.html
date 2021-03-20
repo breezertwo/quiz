@@ -11,12 +11,8 @@
         <div class="container">
             <div id="app">
                 <div class="waiting-dialog" v-if="state == QuizStates.WAITING">
-                    <h2 v-if="!question_number">Weihnachtsquiz Quiz 2020</h2>
+                    <h2 v-if="!question_number">Quiz-Webapp</h2>
                     <h3 v-if="!question_number">Warte auf Start...</h3>
-                    <video autoplay loop playsinline>
-                        <source src="mp4/loadingDubbi.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
                     <!--
                     <div class="sk-folding-cube">
                         <div class="sk-cube1 sk-cube"></div>

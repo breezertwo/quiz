@@ -8,8 +8,8 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 var moment = require('moment');
 var { distance } = require('fastest-levenshtein')
 
-
 var teams = require('./teams.js');
+var packageJSON = require('./package.json')
 
 var store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
@@ -36,7 +36,7 @@ io.use(function(socket, next) {
 });
 
 var quiz = {
-  questions: require('./questions_ta.js')
+  questions: require('./questions.js')
 };
 
 var answers = [];
@@ -74,15 +74,10 @@ app.get('/results', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/results.html'));
 });
 
-/*app.get('/tv', function(req, res) {
-  res.sendFile(path.join(__dirname, 'client/tv.html'));
-});*/
-
-
 app.use(express.static(path.join(__dirname, 'client')));
 
 function updateAdminStatus() {
-  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, version: process.env.npm_package_version});
+  io.emit('admin-status', { teams: teams, state: state, current_question: current_question, answers: answers, questions: quiz.questions, version: packageJSON.version});
 }
 
 function getTeamById(id) {
