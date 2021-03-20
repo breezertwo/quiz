@@ -1,4 +1,1 @@
-client/img/uploads/*.
 node_modules/
-package-lock.json
-questions.js
